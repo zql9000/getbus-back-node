@@ -37,10 +37,10 @@ const login = async (req, res = response) => {
 
     return res.json({
       ok: true,
-      idUser: user._id,
+      userId: user._id,
       name: user.person.name,
       lastName: user.person.lastName,
-      idRole: user.role._id,
+      roleId: user.role._id,
       role: user.role.name,
       token,
     });
@@ -85,16 +85,13 @@ const createAdminUser = async () => {
     person: insertedPerson._id,
     role: insertedRole._id,
   });
-  const insertedUser = await newUser.save();
-
-  const test = await User.countDocuments();
-  console.log(test);
+  await newUser.save();
 };
 
 const renewToken = (req, res = response) => {
-  const { idUser, idRole } = req;
+  const { userId, roleId } = req;
 
-  const token = generateToken(idUser, idRole);
+  const token = generateToken(userId, roleId);
 
   res.json({
     ok: true,

@@ -12,9 +12,9 @@ const validateJWT = (req, res = response, next) => {
   }
 
   try {
-    const { idUser, idRole } = jwt.verify(token, process.env.SECRET_JWT_SEED);
-    req.idUser = idUser;
-    req.idRole = idRole;
+    const { userId, roleId } = jwt.verify(token, process.env.SECRET_JWT_SEED);
+    req.userId = userId;
+    req.roleId = roleId;
   } catch (error) {
     return res.status(401).json({ ok: false, message: 'Invalid token' });
   }
