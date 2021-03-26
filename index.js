@@ -12,6 +12,7 @@ app.use(express.json());
 
 app.use('/api/auth', require('./routes/auth.route'));
 app.use('/api/roles', require('./routes/roles.route'));
+app.use('/api/permissions', require('./routes/permissions.route'));
 
 const port = process.env.PORT;
 app.listen(port, () => {
