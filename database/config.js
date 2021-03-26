@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { initialData } = require('./initialData');
+const User = require('../models/User');
 
 const dbConnection = async () => {
   try {
@@ -7,6 +9,12 @@ const dbConnection = async () => {
       useUnifiedTopology: true,
       useCreateIndex: true,
     });
+
+    // if there are no users in the database, create initial data
+    const userCount = await User.countDocuments();
+    if (userCount === 0) {
+      initialData();
+    }
 
     console.log('Connected to database');
   } catch (error) {
