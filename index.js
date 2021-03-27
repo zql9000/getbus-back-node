@@ -19,6 +19,7 @@ app.use('/api/document-types', require('./routes/document-types.route'));
 app.use('/api/provinces', require('./routes/provinces.route'));
 app.use('/api/cities', require('./routes/cities.route'));
 app.use('/api/bus-stations', require('./routes/bus-stations.route'));
+app.use('/api/sections', require('./routes/sections.route'));
 
 const port = process.env.PORT;
 app.listen(port, () => {
