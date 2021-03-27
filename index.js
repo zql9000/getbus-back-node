@@ -21,6 +21,7 @@ app.use('/api/cities', require('./routes/cities.route'));
 app.use('/api/bus-stations', require('./routes/bus-stations.route'));
 app.use('/api/sections', require('./routes/sections.route'));
 app.use('/api/seat-types', require('./routes/seat-types.route'));
+app.use('/api/seats', require('./routes/seats.route'));
 
 const port = process.env.PORT;
 app.listen(port, () => {
