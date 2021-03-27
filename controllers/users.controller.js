@@ -4,7 +4,7 @@ const User = require('../models/User');
 
 const listUsers = async (req, res = response) => {
   try {
-    const users = await User.find().populate('idPerson');
+    const users = await User.find().populate('personId');
 
     return res.json({
       ok: true,
@@ -22,7 +22,7 @@ const listUsers = async (req, res = response) => {
 const getUser = async (req, res = response) => {
   try {
     const userId = req.params.id;
-    const user = await User.findById(userId).populate('idPerson');
+    const user = await User.findById(userId).populate('personId');
 
     return res.json({
       ok: true,
@@ -97,7 +97,7 @@ const modifyUser = async (req, res = response) => {
     await Person.findByIdAndUpdate(user.personId, newUser);
     const updatedUser = await User.findByIdAndUpdate(userId, newUser, {
       new: true,
-    }).populate('idPerson');
+    }).populate('personId');
 
     return res.json({
       ok: true,
