@@ -25,8 +25,8 @@ router.post(
   '/',
   [
     hasPermission(`${moduleName}New`),
-    check('role', 'Role is required').not().isEmpty(),
-    check('permission', 'Permission is required').not().isEmpty(),
+    check('roleId', 'Role is required').not().isEmpty(),
+    check('permissionId', 'Permission is required').not().isEmpty(),
     validateParams,
   ],
   newRolePermission
@@ -36,8 +36,8 @@ router.put(
   '/:id',
   [
     hasPermission(`${moduleName}Modify`),
-    check('role', 'Role is required').not().isEmpty(),
-    check('permission', 'Permission is required').not().isEmpty(),
+    check('roleId', 'Role is required').not().isEmpty(),
+    check('permissionId', 'Permission is required').not().isEmpty(),
     validateParams,
   ],
   modifyRolePermission
