@@ -99,6 +99,7 @@ const initialData = async () => {
     'DocumentType',
     'Province',
     'City',
+    'BusStation',
   ];
   let newPermission;
   let insertedPermission;
