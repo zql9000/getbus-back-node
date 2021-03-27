@@ -38,6 +38,15 @@ const getPermission = async (req, res = response) => {
 
 const newPermission = async (req, res = response) => {
   try {
+    const existingPermission = await Permission.find({ name: req.body.name });
+
+    if (existingPermission) {
+      return res.status(409).json({
+        ok: false,
+        message: 'A permission with this name already exists',
+      });
+    }
+
     const permission = new Permission(req.body);
     const insertedPermission = await permission.save();
 
@@ -57,6 +66,18 @@ const newPermission = async (req, res = response) => {
 const modifyPermission = async (req, res = response) => {
   try {
     const permissionId = req.params.id;
+    const existingPermission = await Permission.find({
+      name: req.body.name,
+      _id: { $not: { permissionId } },
+    });
+
+    if (existingPermission) {
+      return res.status(409).json({
+        ok: false,
+        message: 'A permission with this name already exists',
+      });
+    }
+
     const permission = await Permission.findById(permissionId);
 
     if (!permission) {
