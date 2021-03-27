@@ -7,8 +7,8 @@ const login = async (req, res = response) => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username })
-      .populate('role', 'name')
-      .populate('person', ['name', 'lastName']);
+      .populate('roleId', 'name')
+      .populate('personId', ['name', 'lastName']);
 
     if (!user) {
       return res
@@ -24,15 +24,15 @@ const login = async (req, res = response) => {
         .json({ ok: false, message: 'User or Password is incorrect' });
     }
 
-    const token = generateToken(user.id, user.role.id);
+    const token = generateToken(user.id, user.roleId._id);
 
     return res.json({
       ok: true,
       userId: user._id,
-      name: user.person.name,
-      lastName: user.person.lastName,
-      roleId: user.role._id,
-      role: user.role.name,
+      name: user.personId.name,
+      lastName: user.personId.lastName,
+      roleId: user.roleId._id,
+      role: user.roleId.name,
       token,
     });
   } catch (error) {

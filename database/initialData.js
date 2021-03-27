@@ -3,6 +3,8 @@ const User = require('../models/User');
 const Role = require('../models/Role');
 const DocumentType = require('../models/DocumentType');
 const Person = require('../models/Person');
+const Permission = require('../models/Permission');
+const RolePermission = require('../models/RolePermission');
 
 const initialData = async () => {
   console.log('Inserting initial data');
@@ -40,7 +42,7 @@ const initialData = async () => {
   // add persons
   const birthdate = new Date(1980, 0, 1);
   let newPerson = new Person({
-    documentType: insertedDocumentType._id,
+    documentTypeId: insertedDocumentType._id,
     documentNumber: '28.123.456',
     name: 'Administrador',
     lastName: 'Del Sistema',
@@ -48,7 +50,7 @@ const initialData = async () => {
   });
   const insertedPerson1 = await newPerson.save();
   newPerson = new Person({
-    documentType: insertedDocumentType._id,
+    documentTypeId: insertedDocumentType._id,
     documentNumber: '28.123.456',
     name: 'Supervisor',
     lastName: 'Del Sistema',
@@ -56,7 +58,7 @@ const initialData = async () => {
   });
   const insertedPerson2 = await newPerson.save();
   newPerson = new Person({
-    documentType: insertedDocumentType._id,
+    documentTypeId: insertedDocumentType._id,
     documentNumber: '28.123.456',
     name: 'Vendedor',
     lastName: 'Del Sistema',
@@ -69,24 +71,68 @@ const initialData = async () => {
   let newUser = new User({
     username: 'administrador',
     password: bcrypt.hashSync('administrador', salt),
-    person: insertedPerson1._id,
-    role: insertedRole1._id,
+    personId: insertedPerson1._id,
+    roleId: insertedRole1._id,
   });
   await newUser.save();
   newUser = new User({
     username: 'supervisor',
     password: bcrypt.hashSync('supervisor', salt),
-    person: insertedPerson2._id,
-    role: insertedRole2._id,
+    personId: insertedPerson2._id,
+    roleId: insertedRole2._id,
   });
   await newUser.save();
   newUser = new User({
     username: 'vendedor',
     password: bcrypt.hashSync('vendedor', salt),
-    person: insertedPerson3._id,
-    role: insertedRole3._id,
+    personId: insertedPerson3._id,
+    roleId: insertedRole3._id,
   });
   await newUser.save();
+
+  // add permissions
+  const permissions = ['Role', 'Permission', 'RolePermission', 'User'];
+  let newPermission;
+  let insertedPermission;
+  let newRolePermission;
+
+  for (const moduleName of permissions) {
+    newPermission = new Permission({ name: `${moduleName}List` });
+    insertedPermission = await newPermission.save();
+    newRolePermission = new RolePermission({
+      roleId: insertedRole1._id,
+      permissionId: insertedPermission._id,
+    });
+    await newRolePermission.save();
+    newPermission = new Permission({ name: `${moduleName}Get` });
+    insertedPermission = await newPermission.save();
+    newRolePermission = new RolePermission({
+      roleId: insertedRole1._id,
+      permissionId: insertedPermission._id,
+    });
+    await newRolePermission.save();
+    newPermission = new Permission({ name: `${moduleName}New` });
+    insertedPermission = await newPermission.save();
+    newRolePermission = new RolePermission({
+      roleId: insertedRole1._id,
+      permissionId: insertedPermission._id,
+    });
+    await newRolePermission.save();
+    newPermission = new Permission({ name: `${moduleName}Modify` });
+    insertedPermission = await newPermission.save();
+    newRolePermission = new RolePermission({
+      roleId: insertedRole1._id,
+      permissionId: insertedPermission._id,
+    });
+    await newRolePermission.save();
+    newPermission = new Permission({ name: `${moduleName}Delete` });
+    insertedPermission = await newPermission.save();
+    newRolePermission = new RolePermission({
+      roleId: insertedRole1._id,
+      permissionId: insertedPermission._id,
+    });
+    await newRolePermission.save();
+  }
 };
 
 module.exports = { initialData };

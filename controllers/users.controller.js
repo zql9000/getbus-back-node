@@ -1,4 +1,5 @@
 const { response } = require('express');
+const Person = require('../models/Person');
 const User = require('../models/User');
 
 const listUsers = async (req, res = response) => {
@@ -47,6 +48,10 @@ const newUser = async (req, res = response) => {
       });
     }
 
+    const person = new Person(req.body);
+    const insertedPerson = await person.save();
+    req.body.personId = insertedPerson._id;
+
     const user = new User(req.body);
     const insertedUser = await user.save();
 
@@ -89,9 +94,10 @@ const modifyUser = async (req, res = response) => {
 
     const newUser = { ...req.body };
 
+    await Person.findByIdAndUpdate(user.personId, newUser);
     const updatedUser = await User.findByIdAndUpdate(userId, newUser, {
       new: true,
-    });
+    }).populate('idPerson');
 
     return res.json({
       ok: true,
