@@ -35,6 +35,7 @@ app.use('/api/vehicles', require('./routes/vehicles.route'));
 app.use('/api/passengers', require('./routes/passengers.route'));
 app.use('/api/travels', require('./routes/travels.route'));
 app.use('/api/bus-tickets', require('./routes/bus-tickets.route'));
+app.use('/api/invoices', require('./routes/invoices.route'));
 
 const port = process.env.PORT;
 app.listen(port, () => {
