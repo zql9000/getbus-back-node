@@ -5,6 +5,8 @@ const DocumentType = require('../models/DocumentType');
 const Person = require('../models/Person');
 
 const initialData = async () => {
+  console.log('Inserting initial data');
+
   // add roles
   let newRole = new Role({ name: 'Administrador' });
   const insertedRole1 = await newRole.save();

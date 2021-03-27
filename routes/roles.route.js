@@ -21,15 +21,15 @@ router.get('/', hasPermission(`${moduleName}List`), listRoles);
 
 router.get('/:id', hasPermission(`${moduleName}Get`), getRole);
 
-// router.post(
-//   '/',
-//   [
-//     hasPermission(`${moduleName}New`),
-//     check('name', 'Name is required').not().isEmpty(),
-//     validateParams,
-//   ],
-//   newRole
-// );
+router.post(
+  '/',
+  [
+    hasPermission(`${moduleName}New`),
+    check('name', 'Name is required').not().isEmpty(),
+    validateParams,
+  ],
+  newRole
+);
 
 router.put(
   '/:id',
@@ -41,6 +41,6 @@ router.put(
   modifyRole
 );
 
-// router.delete('/:id', hasPermission(`${moduleName}Delete`), deleteRole);
+router.delete('/:id', hasPermission(`${moduleName}Delete`), deleteRole);
 
 module.exports = router;
