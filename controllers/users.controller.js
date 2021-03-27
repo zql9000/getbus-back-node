@@ -124,11 +124,12 @@ const deleteUser = async (req, res = response) => {
       });
     }
 
+    const deletedPerson = await Person.findByIdAndDelete(user.personId);
     const deletedUser = await User.findByIdAndDelete(userId);
 
     return res.json({
       ok: true,
-      user: deletedUser,
+      user: { ...deletedUser, person: deletedPerson },
     });
   } catch (error) {
     console.log(error);
