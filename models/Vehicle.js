@@ -5,12 +5,12 @@ const VehicleSchema = new Schema({
     type: String,
     required: true,
   },
-  transportCompany: {
+  transportCompanyId: {
     type: Schema.Types.ObjectId,
     ref: 'TransportCompany',
     required: true,
   },
-  vehicleType: {
+  vehicleTypeId: {
     type: Schema.Types.ObjectId,
     ref: 'VehicleType',
     required: true,

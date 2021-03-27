@@ -17,7 +17,7 @@ const TravelSeatSchema = new Schema({
     type: String,
     required: true,
   },
-  travelDetail: {
+  travelDetailId: {
     type: Schema.Types.ObjectId,
     ref: 'TravelDetail',
     required: true,

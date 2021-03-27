@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const BusStationSchema = new Schema({
-  city: {
+  cityId: {
     type: Schema.Types.ObjectId,
     ref: 'City',
     required: true,

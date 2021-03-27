@@ -1,12 +1,12 @@
 const { Schema, model } = require('mongoose');
 
 const BusTicketSchema = new Schema({
-  person: {
+  personId: {
     type: Schema.Types.ObjectId,
     ref: 'Passenger',
     required: true,
   },
-  role: {
+  invoiceId: {
     type: Schema.Types.ObjectId,
     ref: 'Invoice',
     required: true,

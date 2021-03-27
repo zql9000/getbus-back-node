@@ -5,17 +5,17 @@ const TravelSchema = new Schema({
     type: Date,
     required: true,
   },
-  vehicle: {
+  vehicleId: {
     type: Schema.Types.ObjectId,
     ref: 'Vehicle',
     required: true,
   },
-  sectionOrigin: {
+  sectionIdOrigin: {
     type: Schema.Types.ObjectId,
     ref: 'Section',
     required: true,
   },
-  busStationDestination: {
+  busStationIdDestination: {
     type: Schema.Types.ObjectId,
     ref: 'BusStation',
     required: true,

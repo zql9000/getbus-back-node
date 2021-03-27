@@ -1,12 +1,12 @@
 const { Schema, model } = require('mongoose');
 
 const TravelDetailSchema = new Schema({
-  travel: {
+  travelId: {
     type: Schema.Types.ObjectId,
     ref: 'Travel',
     required: true,
   },
-  busTicket: {
+  busTicketId: {
     type: Schema.Types.ObjectId,
     ref: 'BusTicket',
     required: true,

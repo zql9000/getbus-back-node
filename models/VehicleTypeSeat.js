@@ -1,12 +1,12 @@
 const { Schema, model } = require('mongoose');
 
 const VehicleTypeSeatSchema = new Schema({
-  vehicleType: {
+  vehicleTypeId: {
     type: Schema.Types.ObjectId,
     ref: 'VehicleType',
     required: true,
   },
-  seat: {
+  seatId: {
     type: Schema.Types.ObjectId,
     ref: 'Seat',
     required: true,

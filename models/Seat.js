@@ -5,7 +5,7 @@ const SeatSchema = new Schema({
     type: String,
     required: true,
   },
-  seatType: {
+  seatTypeId: {
     type: Schema.Types.ObjectId,
     ref: 'SeatType',
     required: true,

@@ -9,12 +9,12 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  person: {
+  personId: {
     type: Schema.Types.ObjectId,
     ref: 'Person',
     required: true,
   },
-  role: {
+  roleId: {
     type: Schema.Types.ObjectId,
     ref: 'Role',
     required: true,
