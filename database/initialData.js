@@ -108,6 +108,7 @@ const initialData = async () => {
     'VehicleTypeSeat',
     'Vehicle',
     'Passenger',
+    'Travel',
   ];
   let newPermission;
   let insertedPermission;
