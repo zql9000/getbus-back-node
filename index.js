@@ -15,6 +15,7 @@ app.use('/api/roles', require('./routes/roles.route'));
 app.use('/api/permissions', require('./routes/permissions.route'));
 app.use('/api/role-permissions', require('./routes/role-permissions.route'));
 app.use('/api/users', require('./routes/users.route'));
+app.use('/api/document-types', require('./routes/document-types.route'));
 
 const port = process.env.PORT;
 app.listen(port, () => {

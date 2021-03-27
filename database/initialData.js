@@ -91,7 +91,13 @@ const initialData = async () => {
   await newUser.save();
 
   // add permissions
-  const permissions = ['Role', 'Permission', 'RolePermission', 'User'];
+  const permissions = [
+    'Role',
+    'Permission',
+    'RolePermission',
+    'User',
+    'DocumentType',
+  ];
   let newPermission;
   let insertedPermission;
   let newRolePermission;
