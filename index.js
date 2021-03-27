@@ -23,6 +23,10 @@ app.use('/api/sections', require('./routes/sections.route'));
 app.use('/api/seat-types', require('./routes/seat-types.route'));
 app.use('/api/seats', require('./routes/seats.route'));
 app.use('/api/vehicle-types', require('./routes/vehicle-types.route'));
+app.use(
+  '/api/transport-companies',
+  require('./routes/transport-companies.route')
+);
 
 const port = process.env.PORT;
 app.listen(port, () => {
