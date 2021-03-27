@@ -1,4 +1,4 @@
-// Routes /api/cities
+// Routes /api/provinces
 const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
@@ -6,30 +6,29 @@ const { hasPermission } = require('../middlewares/hasPermission');
 const { validateJWT } = require('../middlewares/validate-jwt');
 const { validateParams } = require('../middlewares/validate-params');
 const {
-  listCities,
-  getCity,
-  newCity,
-  modifyCity,
-  deleteCity,
-} = require('../controllers/cities.controller');
+  listProvinces,
+  getProvince,
+  newProvince,
+  modifyProvince,
+  deleteProvince,
+} = require('../controllers/provinces.controller');
 
 router.use(validateJWT);
 
-const moduleName = 'City';
+const moduleName = 'Province';
 
-router.get('/', hasPermission(`${moduleName}List`), listCities);
+router.get('/', hasPermission(`${moduleName}List`), listProvinces);
 
-router.get('/:id', hasPermission(`${moduleName}Get`), getCity);
+router.get('/:id', hasPermission(`${moduleName}Get`), getProvince);
 
 router.post(
   '/',
   [
     hasPermission(`${moduleName}New`),
     check('name', 'Name is required').not().isEmpty(),
-    check('provinceId', 'ProvinceId is required').not().isEmpty(),
     validateParams,
   ],
-  newCity
+  newProvince
 );
 
 router.put(
@@ -37,12 +36,11 @@ router.put(
   [
     hasPermission(`${moduleName}Modify`),
     check('name', 'Name is required').not().isEmpty(),
-    check('provinceId', 'ProvinceId is required').not().isEmpty(),
     validateParams,
   ],
-  modifyCity
+  modifyProvince
 );
 
-router.delete('/:id', hasPermission(`${moduleName}Delete`), deleteCity);
+router.delete('/:id', hasPermission(`${moduleName}Delete`), deleteProvince);
 
 module.exports = router;

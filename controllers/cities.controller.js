@@ -3,7 +3,7 @@ const City = require('../models/City');
 
 const listCities = async (req, res = response) => {
   try {
-    const cities = await City.find();
+    const cities = await City.find().populate('provinceId');
 
     return res.json({
       ok: true,
@@ -21,7 +21,7 @@ const listCities = async (req, res = response) => {
 const getCity = async (req, res = response) => {
   try {
     const cityId = req.params.id;
-    const city = await City.findById(cityId);
+    const city = await City.findById(cityId).populate('provinceId');
 
     return res.json({
       ok: true,
@@ -38,12 +38,15 @@ const getCity = async (req, res = response) => {
 
 const newCity = async (req, res = response) => {
   try {
-    const existingCity = await City.find({ name: req.body.name });
+    const existingCity = await City.find({
+      name: req.body.name,
+      provinceId: req.body.provinceId,
+    });
 
     if (existingCity) {
       return res.status(409).json({
         ok: false,
-        message: 'A city with this name already exists',
+        message: 'A city with this name and provinceId already exists',
       });
     }
 
@@ -68,13 +71,14 @@ const modifyCity = async (req, res = response) => {
     const cityId = req.params.id;
     const existingCity = await City.find({
       name: req.body.name,
+      provinceId: req.body.provinceId,
       _id: { $not: { cityId } },
     });
 
     if (existingCity) {
       return res.status(409).json({
         ok: false,
-        message: 'A city with this name already exists',
+        message: 'A city with this name and provinceId already exists',
       });
     }
 

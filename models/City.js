@@ -5,6 +5,11 @@ const CitySchema = new Schema({
     type: String,
     required: true,
   },
+  provinceId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Province',
+    required: true,
+  },
 });
 
 CitySchema.method('toJSON', function () {

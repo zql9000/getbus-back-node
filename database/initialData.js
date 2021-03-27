@@ -97,6 +97,7 @@ const initialData = async () => {
     'RolePermission',
     'User',
     'DocumentType',
+    'Province',
     'City',
   ];
   let newPermission;
