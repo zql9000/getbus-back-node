@@ -45,22 +45,30 @@ const login = async (req, res = response) => {
 };
 
 const renewToken = async (req, res = response) => {
-  const { userId, roleId } = req;
+  try {
+    const { userId, roleId } = req;
 
-  const user = await User.findById(userId)
-    .populate('personId')
-    .populate('roleId');
-  const token = generateToken(userId, roleId);
+    const user = await User.findById(userId)
+      .populate('personId')
+      .populate('roleId');
+    const token = generateToken(userId, roleId);
 
-  return res.json({
-    ok: true,
-    userId: user._id,
-    name: user.personId.name,
-    lastName: user.personId.lastName,
-    roleId: user.roleId._id,
-    role: user.roleId.name,
-    token,
-  });
+    return res.json({
+      ok: true,
+      userId: user._id,
+      name: user.personId.name,
+      lastName: user.personId.lastName,
+      roleId: user.roleId._id,
+      role: user.roleId.name,
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      message: 'Ask the administrator for information about this error',
+    });
+  }
 };
 
 module.exports = {
