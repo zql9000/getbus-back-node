@@ -15,8 +15,8 @@ function hasPermission(permission) {
       }
 
       const rolePermissionFound = await RolePermission.findOne({
-        role: req.roleId,
-        permission: permissionFound._id,
+        roleId: req.roleId,
+        permissionId: permissionFound._id,
       });
 
       if (!rolePermissionFound) {
