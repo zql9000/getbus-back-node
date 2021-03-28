@@ -17,14 +17,14 @@ router.use(validateJWT);
 
 const moduleName = 'User';
 
-router.get('/', hasPermission(`${moduleName}List`), listUsers);
+router.get('/', hasPermission(`${moduleName}_List`), listUsers);
 
-router.get('/:id', hasPermission(`${moduleName}Get`), getUser);
+router.get('/:id', hasPermission(`${moduleName}_Get`), getUser);
 
 router.post(
   '/',
   [
-    hasPermission(`${moduleName}New`),
+    hasPermission(`${moduleName}_New`),
     check('username', 'Username is required').not().isEmpty(),
     check('password', 'Password must be at least 8 characters').isLength({
       min: 8,
@@ -42,7 +42,7 @@ router.post(
 router.put(
   '/:id',
   [
-    hasPermission(`${moduleName}Modify`),
+    hasPermission(`${moduleName}_Modify`),
     check('username', 'Username is required').not().isEmpty(),
     check('password', 'Password must be at least 8 characters').isLength({
       min: 8,
@@ -57,6 +57,6 @@ router.put(
   modifyUser
 );
 
-router.delete('/:id', hasPermission(`${moduleName}Delete`), deleteUser);
+router.delete('/:id', hasPermission(`${moduleName}_Delete`), deleteUser);
 
 module.exports = router;

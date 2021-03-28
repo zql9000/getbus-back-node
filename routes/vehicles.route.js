@@ -17,14 +17,14 @@ router.use(validateJWT);
 
 const moduleName = 'Vehicle';
 
-router.get('/', hasPermission(`${moduleName}List`), listVehicles);
+router.get('/', hasPermission(`${moduleName}_List`), listVehicles);
 
-router.get('/:id', hasPermission(`${moduleName}Get`), getVehicle);
+router.get('/:id', hasPermission(`${moduleName}_Get`), getVehicle);
 
 router.post(
   '/',
   [
-    hasPermission(`${moduleName}New`),
+    hasPermission(`${moduleName}_New`),
     check('internNumber', 'InternNumber is required').not().isEmpty(),
     check('transportCompanyId', 'TransportCompanyId is required')
       .not()
@@ -38,7 +38,7 @@ router.post(
 router.put(
   '/:id',
   [
-    hasPermission(`${moduleName}Modify`),
+    hasPermission(`${moduleName}_Modify`),
     check('internNumber', 'InternNumber is required').not().isEmpty(),
     check('transportCompanyId', 'TransportCompanyId is required')
       .not()
@@ -49,6 +49,6 @@ router.put(
   modifyVehicle
 );
 
-router.delete('/:id', hasPermission(`${moduleName}Delete`), deleteVehicle);
+router.delete('/:id', hasPermission(`${moduleName}_Delete`), deleteVehicle);
 
 module.exports = router;

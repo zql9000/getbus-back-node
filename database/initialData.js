@@ -117,35 +117,35 @@ const initialData = async () => {
   let newRolePermission;
 
   for (const moduleName of permissions) {
-    newPermission = new Permission({ name: `${moduleName}List` });
+    newPermission = new Permission({ name: `${moduleName}_List` });
     insertedPermission = await newPermission.save();
     newRolePermission = new RolePermission({
       roleId: insertedRole1._id,
       permissionId: insertedPermission._id,
     });
     await newRolePermission.save();
-    newPermission = new Permission({ name: `${moduleName}Get` });
+    newPermission = new Permission({ name: `${moduleName}_Get` });
     insertedPermission = await newPermission.save();
     newRolePermission = new RolePermission({
       roleId: insertedRole1._id,
       permissionId: insertedPermission._id,
     });
     await newRolePermission.save();
-    newPermission = new Permission({ name: `${moduleName}New` });
+    newPermission = new Permission({ name: `${moduleName}_New` });
     insertedPermission = await newPermission.save();
     newRolePermission = new RolePermission({
       roleId: insertedRole1._id,
       permissionId: insertedPermission._id,
     });
     await newRolePermission.save();
-    newPermission = new Permission({ name: `${moduleName}Modify` });
+    newPermission = new Permission({ name: `${moduleName}_Modify` });
     insertedPermission = await newPermission.save();
     newRolePermission = new RolePermission({
       roleId: insertedRole1._id,
       permissionId: insertedPermission._id,
     });
     await newRolePermission.save();
-    newPermission = new Permission({ name: `${moduleName}Delete` });
+    newPermission = new Permission({ name: `${moduleName}_Delete` });
     insertedPermission = await newPermission.save();
     newRolePermission = new RolePermission({
       roleId: insertedRole1._id,

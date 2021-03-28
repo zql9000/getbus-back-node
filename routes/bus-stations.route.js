@@ -17,14 +17,14 @@ router.use(validateJWT);
 
 const moduleName = 'BusStation';
 
-router.get('/', hasPermission(`${moduleName}List`), listBusStations);
+router.get('/', hasPermission(`${moduleName}_List`), listBusStations);
 
-router.get('/:id', hasPermission(`${moduleName}Get`), getBusStation);
+router.get('/:id', hasPermission(`${moduleName}_Get`), getBusStation);
 
 router.post(
   '/',
   [
-    hasPermission(`${moduleName}New`),
+    hasPermission(`${moduleName}_New`),
     check('name', 'Name is required').not().isEmpty(),
     check('cityId', 'CityId is required').not().isEmpty(),
     validateParams,
@@ -35,7 +35,7 @@ router.post(
 router.put(
   '/:id',
   [
-    hasPermission(`${moduleName}Modify`),
+    hasPermission(`${moduleName}_Modify`),
     check('name', 'Name is required').not().isEmpty(),
     check('cityId', 'CityId is required').not().isEmpty(),
     validateParams,
@@ -43,6 +43,6 @@ router.put(
   modifyBusStation
 );
 
-router.delete('/:id', hasPermission(`${moduleName}Delete`), deleteBusStation);
+router.delete('/:id', hasPermission(`${moduleName}_Delete`), deleteBusStation);
 
 module.exports = router;

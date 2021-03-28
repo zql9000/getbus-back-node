@@ -17,14 +17,14 @@ router.use(validateJWT);
 
 const moduleName = 'City';
 
-router.get('/', hasPermission(`${moduleName}List`), listCities);
+router.get('/', hasPermission(`${moduleName}_List`), listCities);
 
-router.get('/:id', hasPermission(`${moduleName}Get`), getCity);
+router.get('/:id', hasPermission(`${moduleName}_Get`), getCity);
 
 router.post(
   '/',
   [
-    hasPermission(`${moduleName}New`),
+    hasPermission(`${moduleName}_New`),
     check('name', 'Name is required').not().isEmpty(),
     check('provinceId', 'ProvinceId is required').not().isEmpty(),
     validateParams,
@@ -35,7 +35,7 @@ router.post(
 router.put(
   '/:id',
   [
-    hasPermission(`${moduleName}Modify`),
+    hasPermission(`${moduleName}_Modify`),
     check('name', 'Name is required').not().isEmpty(),
     check('provinceId', 'ProvinceId is required').not().isEmpty(),
     validateParams,
@@ -43,6 +43,6 @@ router.put(
   modifyCity
 );
 
-router.delete('/:id', hasPermission(`${moduleName}Delete`), deleteCity);
+router.delete('/:id', hasPermission(`${moduleName}_Delete`), deleteCity);
 
 module.exports = router;

@@ -17,14 +17,14 @@ router.use(validateJWT);
 
 const moduleName = 'SeatType';
 
-router.get('/', hasPermission(`${moduleName}List`), listSeatTypes);
+router.get('/', hasPermission(`${moduleName}_List`), listSeatTypes);
 
-router.get('/:id', hasPermission(`${moduleName}Get`), getSeatType);
+router.get('/:id', hasPermission(`${moduleName}_Get`), getSeatType);
 
 router.post(
   '/',
   [
-    hasPermission(`${moduleName}New`),
+    hasPermission(`${moduleName}_New`),
     check('name', 'Name is required').not().isEmpty(),
     validateParams,
   ],
@@ -34,13 +34,13 @@ router.post(
 router.put(
   '/:id',
   [
-    hasPermission(`${moduleName}Modify`),
+    hasPermission(`${moduleName}_Modify`),
     check('name', 'Name is required').not().isEmpty(),
     validateParams,
   ],
   modifySeatType
 );
 
-router.delete('/:id', hasPermission(`${moduleName}Delete`), deleteSeatType);
+router.delete('/:id', hasPermission(`${moduleName}_Delete`), deleteSeatType);
 
 module.exports = router;

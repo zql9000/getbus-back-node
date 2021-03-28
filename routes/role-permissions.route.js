@@ -17,14 +17,14 @@ router.use(validateJWT);
 
 const moduleName = 'RolePermission';
 
-router.get('/', hasPermission(`${moduleName}List`), listRolePermissions);
+router.get('/', hasPermission(`${moduleName}_List`), listRolePermissions);
 
-router.get('/:id', hasPermission(`${moduleName}Get`), getRolePermission);
+router.get('/:id', hasPermission(`${moduleName}_Get`), getRolePermission);
 
 router.post(
   '/',
   [
-    hasPermission(`${moduleName}New`),
+    hasPermission(`${moduleName}_New`),
     check('roleId', 'Role is required').not().isEmpty(),
     check('permissionId', 'Permission is required').not().isEmpty(),
     validateParams,
@@ -35,7 +35,7 @@ router.post(
 router.put(
   '/:id',
   [
-    hasPermission(`${moduleName}Modify`),
+    hasPermission(`${moduleName}_Modify`),
     check('roleId', 'Role is required').not().isEmpty(),
     check('permissionId', 'Permission is required').not().isEmpty(),
     validateParams,
@@ -45,7 +45,7 @@ router.put(
 
 router.delete(
   '/:id',
-  hasPermission(`${moduleName}Delete`),
+  hasPermission(`${moduleName}_Delete`),
   deleteRolePermission
 );
 

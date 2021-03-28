@@ -44,13 +44,21 @@ const login = async (req, res = response) => {
   }
 };
 
-const renewToken = (req, res = response) => {
+const renewToken = async (req, res = response) => {
   const { userId, roleId } = req;
 
+  const user = await User.findById(userId)
+    .populate('personId')
+    .populate('roleId');
   const token = generateToken(userId, roleId);
 
-  res.json({
+  return res.json({
     ok: true,
+    userId: user._id,
+    name: user.personId.name,
+    lastName: user.personId.lastName,
+    roleId: user.roleId._id,
+    role: user.roleId.name,
     token,
   });
 };

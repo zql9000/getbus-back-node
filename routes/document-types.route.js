@@ -17,14 +17,14 @@ router.use(validateJWT);
 
 const moduleName = 'DocumentType';
 
-router.get('/', hasPermission(`${moduleName}List`), listDocumentTypes);
+router.get('/', hasPermission(`${moduleName}_List`), listDocumentTypes);
 
-router.get('/:id', hasPermission(`${moduleName}Get`), getDocumentType);
+router.get('/:id', hasPermission(`${moduleName}_Get`), getDocumentType);
 
 router.post(
   '/',
   [
-    hasPermission(`${moduleName}New`),
+    hasPermission(`${moduleName}_New`),
     check('name', 'Name is required').not().isEmpty(),
     check('shortName', 'ShortName is required').not().isEmpty(),
     validateParams,
@@ -35,7 +35,7 @@ router.post(
 router.put(
   '/:id',
   [
-    hasPermission(`${moduleName}Modify`),
+    hasPermission(`${moduleName}_Modify`),
     check('name', 'Name is required').not().isEmpty(),
     check('shortName', 'ShortName is required').not().isEmpty(),
     validateParams,
@@ -43,6 +43,10 @@ router.put(
   modifyDocumentType
 );
 
-router.delete('/:id', hasPermission(`${moduleName}Delete`), deleteDocumentType);
+router.delete(
+  '/:id',
+  hasPermission(`${moduleName}_Delete`),
+  deleteDocumentType
+);
 
 module.exports = router;

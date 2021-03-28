@@ -17,14 +17,14 @@ router.use(validateJWT);
 
 const moduleName = 'Section';
 
-router.get('/', hasPermission(`${moduleName}List`), listSections);
+router.get('/', hasPermission(`${moduleName}_List`), listSections);
 
-router.get('/:id', hasPermission(`${moduleName}Get`), getSection);
+router.get('/:id', hasPermission(`${moduleName}_Get`), getSection);
 
 router.post(
   '/',
   [
-    hasPermission(`${moduleName}New`),
+    hasPermission(`${moduleName}_New`),
     check('busStationId', 'BusStationId is required').not().isEmpty(),
     check('busStationIdNext', 'BusStationIdNext is required').not().isEmpty(),
     validateParams,
@@ -35,7 +35,7 @@ router.post(
 router.put(
   '/:id',
   [
-    hasPermission(`${moduleName}Modify`),
+    hasPermission(`${moduleName}_Modify`),
     check('busStationId', 'BusStationId is required').not().isEmpty(),
     check('busStationIdNext', 'BusStationIdNext is required').not().isEmpty(),
     validateParams,
@@ -43,6 +43,6 @@ router.put(
   modifySection
 );
 
-router.delete('/:id', hasPermission(`${moduleName}Delete`), deleteSection);
+router.delete('/:id', hasPermission(`${moduleName}_Delete`), deleteSection);
 
 module.exports = router;

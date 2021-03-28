@@ -17,14 +17,14 @@ router.use(validateJWT);
 
 const moduleName = 'Permission';
 
-router.get('/', hasPermission(`${moduleName}List`), listPermissions);
+router.get('/', hasPermission(`${moduleName}_List`), listPermissions);
 
-router.get('/:id', hasPermission(`${moduleName}Get`), getPermission);
+router.get('/:id', hasPermission(`${moduleName}_Get`), getPermission);
 
 router.post(
   '/',
   [
-    hasPermission(`${moduleName}New`),
+    hasPermission(`${moduleName}_New`),
     check('name', 'Name is required').not().isEmpty(),
     validateParams,
   ],
@@ -34,13 +34,13 @@ router.post(
 router.put(
   '/:id',
   [
-    hasPermission(`${moduleName}Modify`),
+    hasPermission(`${moduleName}_Modify`),
     check('name', 'Name is required').not().isEmpty(),
     validateParams,
   ],
   modifyPermission
 );
 
-router.delete('/:id', hasPermission(`${moduleName}Delete`), deletePermission);
+router.delete('/:id', hasPermission(`${moduleName}_Delete`), deletePermission);
 
 module.exports = router;

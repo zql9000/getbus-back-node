@@ -18,14 +18,14 @@ router.use(validateJWT);
 
 const moduleName = 'Invoice';
 
-router.get('/', hasPermission(`${moduleName}List`), listInvoices);
+router.get('/', hasPermission(`${moduleName}_List`), listInvoices);
 
-router.get('/:id', hasPermission(`${moduleName}Get`), getInvoice);
+router.get('/:id', hasPermission(`${moduleName}_Get`), getInvoice);
 
 router.post(
   '/',
   [
-    hasPermission(`${moduleName}New`),
+    hasPermission(`${moduleName}_New`),
     check('number', 'Number is required').not().isEmpty(),
     check('date', 'Date is required').custom(isDate),
     check('unitPrice', 'UnitPrice is required').not().isEmpty(),
@@ -38,7 +38,7 @@ router.post(
 router.put(
   '/:id',
   [
-    hasPermission(`${moduleName}Modify`),
+    hasPermission(`${moduleName}_Modify`),
     check('number', 'Number is required').not().isEmpty(),
     check('date', 'Date is required').custom(isDate),
     check('unitPrice', 'UnitPrice is required').not().isEmpty(),
@@ -48,6 +48,6 @@ router.put(
   modifyInvoice
 );
 
-router.delete('/:id', hasPermission(`${moduleName}Delete`), deleteInvoice);
+router.delete('/:id', hasPermission(`${moduleName}_Delete`), deleteInvoice);
 
 module.exports = router;

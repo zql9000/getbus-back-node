@@ -17,14 +17,14 @@ router.use(validateJWT);
 
 const moduleName = 'Province';
 
-router.get('/', hasPermission(`${moduleName}List`), listProvinces);
+router.get('/', hasPermission(`${moduleName}_List`), listProvinces);
 
-router.get('/:id', hasPermission(`${moduleName}Get`), getProvince);
+router.get('/:id', hasPermission(`${moduleName}_Get`), getProvince);
 
 router.post(
   '/',
   [
-    hasPermission(`${moduleName}New`),
+    hasPermission(`${moduleName}_New`),
     check('name', 'Name is required').not().isEmpty(),
     validateParams,
   ],
@@ -34,13 +34,13 @@ router.post(
 router.put(
   '/:id',
   [
-    hasPermission(`${moduleName}Modify`),
+    hasPermission(`${moduleName}_Modify`),
     check('name', 'Name is required').not().isEmpty(),
     validateParams,
   ],
   modifyProvince
 );
 
-router.delete('/:id', hasPermission(`${moduleName}Delete`), deleteProvince);
+router.delete('/:id', hasPermission(`${moduleName}_Delete`), deleteProvince);
 
 module.exports = router;
