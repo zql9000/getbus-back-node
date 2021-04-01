@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const Seat = require('../models/Seat');
 
 const listSeats = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listSeats = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -31,7 +32,7 @@ const getSeat = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -43,7 +44,7 @@ const newSeat = async (req, res = response) => {
     if (existingSeat) {
       return res.status(409).json({
         ok: false,
-        message: 'A seat with this number already exists',
+        message: responseMessages.msgSeatExists,
       });
     }
 
@@ -58,7 +59,7 @@ const newSeat = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -68,13 +69,13 @@ const modifySeat = async (req, res = response) => {
     const seatId = req.params.id;
     const existingSeat = await Seat.find({
       number: req.body.number,
-      _id: { $not: { seatId } },
+      _id: { $ne: { seatId } },
     });
 
     if (existingSeat) {
       return res.status(409).json({
         ok: false,
-        message: 'A seat with this number already exists',
+        message: responseMessages.msgSeatExists,
       });
     }
 
@@ -83,7 +84,7 @@ const modifySeat = async (req, res = response) => {
     if (!seat) {
       return res.status(404).json({
         ok: false,
-        message: 'Seat not found',
+        message: responseMessages.msgSeatNotFound,
       });
     }
 
@@ -101,7 +102,7 @@ const modifySeat = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -114,7 +115,7 @@ const deleteSeat = async (req, res = response) => {
     if (!seat) {
       return res.status(404).json({
         ok: false,
-        message: 'Seat not found',
+        message: responseMessages.msgSeatNotFound,
       });
     }
 
@@ -128,7 +129,7 @@ const deleteSeat = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

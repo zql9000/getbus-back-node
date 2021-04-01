@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const Section = require('../models/Section');
 
 const listSections = async (req, res = response) => {
@@ -15,7 +16,7 @@ const listSections = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -35,7 +36,7 @@ const getSection = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -50,8 +51,7 @@ const newSection = async (req, res = response) => {
     if (existingSection) {
       return res.status(409).json({
         ok: false,
-        message:
-          'A section with this busStationId and busStationIdNext already exists',
+        message: responseMessages.msgSectionExists,
       });
     }
 
@@ -66,7 +66,7 @@ const newSection = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -77,14 +77,13 @@ const modifySection = async (req, res = response) => {
     const existingSection = await Section.find({
       busStationId: req.body.busStationId,
       busStationIdNext: req.body.busStationIdNext,
-      _id: { $not: { sectionId } },
+      _id: { $ne: { sectionId } },
     });
 
     if (existingSection) {
       return res.status(409).json({
         ok: false,
-        message:
-          'A section with this busStationId and busStationIdNext already exists',
+        message: responseMessages.msgSectionExists,
       });
     }
 
@@ -93,7 +92,7 @@ const modifySection = async (req, res = response) => {
     if (!section) {
       return res.status(404).json({
         ok: false,
-        message: 'Section not found',
+        message: responseMessages.msgSectionNotFound,
       });
     }
 
@@ -115,7 +114,7 @@ const modifySection = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -128,7 +127,7 @@ const deleteSection = async (req, res = response) => {
     if (!section) {
       return res.status(404).json({
         ok: false,
-        message: 'Section not found',
+        message: responseMessages.msgSectionNotFound,
       });
     }
 
@@ -142,7 +141,7 @@ const deleteSection = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const SeatType = require('../models/SeatType');
 
 const listSeatTypes = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listSeatTypes = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -31,7 +32,7 @@ const getSeatType = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -43,7 +44,7 @@ const newSeatType = async (req, res = response) => {
     if (existingSeatType) {
       return res.status(409).json({
         ok: false,
-        message: 'A seatType with this name already exists',
+        message: responseMessages.msgSeatTypeExists,
       });
     }
 
@@ -58,7 +59,7 @@ const newSeatType = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -68,13 +69,13 @@ const modifySeatType = async (req, res = response) => {
     const seatTypeId = req.params.id;
     const existingSeatType = await SeatType.find({
       name: req.body.name,
-      _id: { $not: { seatTypeId } },
+      _id: { $ne: { seatTypeId } },
     });
 
     if (existingSeatType) {
       return res.status(409).json({
         ok: false,
-        message: 'A seatType with this name already exists',
+        message: responseMessages.msgSeatTypeExists,
       });
     }
 
@@ -83,7 +84,7 @@ const modifySeatType = async (req, res = response) => {
     if (!seatType) {
       return res.status(404).json({
         ok: false,
-        message: 'SeatType not found',
+        message: responseMessages.msgSeatTypeNotFound,
       });
     }
 
@@ -105,7 +106,7 @@ const modifySeatType = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -118,7 +119,7 @@ const deleteSeatType = async (req, res = response) => {
     if (!seatType) {
       return res.status(404).json({
         ok: false,
-        message: 'SeatType not found',
+        message: responseMessages.msgSeatTypeNotFound,
       });
     }
 
@@ -132,7 +133,7 @@ const deleteSeatType = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

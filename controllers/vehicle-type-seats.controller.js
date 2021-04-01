@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const VehicleTypeSeat = require('../models/VehicleTypeSeat');
 
 const listVehicleTypeSeats = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listVehicleTypeSeats = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -31,7 +32,7 @@ const getVehicleTypeSeat = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -47,8 +48,7 @@ const newVehicleTypeSeat = async (req, res = response) => {
     if (existingVehicleTypeSeat) {
       return res.status(409).json({
         ok: false,
-        message:
-          'A vehicleTypeSeat with this floor, locationX and locationY already exists',
+        message: responseMessages.msgVehicleTypeSeatExists,
       });
     }
 
@@ -63,7 +63,7 @@ const newVehicleTypeSeat = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -75,14 +75,13 @@ const modifyVehicleTypeSeat = async (req, res = response) => {
       floor: req.body.floor,
       locationX: req.body.locationX,
       locationY: req.body.locationY,
-      _id: { $not: { vehicleTypeSeatId } },
+      _id: { $ne: { vehicleTypeSeatId } },
     });
 
     if (existingVehicleTypeSeat) {
       return res.status(409).json({
         ok: false,
-        message:
-          'A vehicleTypeSeat with this floor, locationX and locationY already exists',
+        message: responseMessages.msgVehicleTypeSeatExists,
       });
     }
 
@@ -91,7 +90,7 @@ const modifyVehicleTypeSeat = async (req, res = response) => {
     if (!vehicleTypeSeat) {
       return res.status(404).json({
         ok: false,
-        message: 'VehicleTypeSeat not found',
+        message: responseMessages.msgVehicleTypeSeatNotFound,
       });
     }
 
@@ -113,7 +112,7 @@ const modifyVehicleTypeSeat = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -126,7 +125,7 @@ const deleteVehicleTypeSeat = async (req, res = response) => {
     if (!vehicleTypeSeat) {
       return res.status(404).json({
         ok: false,
-        message: 'VehicleTypeSeat not found',
+        message: responseMessages.msgVehicleTypeSeatNotFound,
       });
     }
 
@@ -142,7 +141,7 @@ const deleteVehicleTypeSeat = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

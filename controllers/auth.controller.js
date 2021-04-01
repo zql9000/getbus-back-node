@@ -2,6 +2,7 @@ const { response } = require('express');
 const bcrypt = require('bcryptjs');
 const { generateToken } = require('../helpers/jwt');
 const User = require('../models/User');
+const { responseMessages } = require('../helpers/spanishMessages');
 
 const login = async (req, res = response) => {
   const { username, password } = req.body;
@@ -13,7 +14,7 @@ const login = async (req, res = response) => {
     if (!user) {
       return res
         .status(400)
-        .json({ ok: false, message: 'User or Password is incorrect' });
+        .json({ ok: false, message: responseMessages.msgUserPassIncorrect });
     }
 
     const validPassword = bcrypt.compareSync(password, user.password);
@@ -21,7 +22,7 @@ const login = async (req, res = response) => {
     if (!validPassword) {
       return res
         .status(400)
-        .json({ ok: false, message: 'User or Password is incorrect' });
+        .json({ ok: false, message: responseMessages.msgUserPassIncorrect });
     }
 
     const token = generateToken(user.id, user.roleId._id);
@@ -39,7 +40,7 @@ const login = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -66,7 +67,7 @@ const renewToken = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

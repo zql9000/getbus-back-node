@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const BusTicket = require('../models/BusTicket');
 
 const listBusTickets = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listBusTickets = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -31,7 +32,7 @@ const getBusTicket = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -46,8 +47,7 @@ const newBusTicket = async (req, res = response) => {
     if (existingBusTicket) {
       return res.status(409).json({
         ok: false,
-        message:
-          'A busTicket with this passengerId and invoiceId already exists',
+        message: responseMessages.msgBusTicketExists,
       });
     }
 
@@ -63,7 +63,7 @@ const newBusTicket = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -74,14 +74,13 @@ const modifyBusTicket = async (req, res = response) => {
     const existingBusTicket = await BusTicket.find({
       passengerId: req.body.passengerId,
       invoiceId: req.body.invoiceId,
-      _id: { $not: { busTicketId } },
+      _id: { $ne: { busTicketId } },
     });
 
     if (existingBusTicket) {
       return res.status(409).json({
         ok: false,
-        message:
-          'A busTicket with this passengerId and invoiceId already exists',
+        message: responseMessages.msgBusTicketExists,
       });
     }
 
@@ -90,7 +89,7 @@ const modifyBusTicket = async (req, res = response) => {
     if (!busTicket) {
       return res.status(404).json({
         ok: false,
-        message: 'BusTicket not found',
+        message: responseMessages.msgBusTicketNotFoud,
       });
     }
 
@@ -112,7 +111,7 @@ const modifyBusTicket = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -125,7 +124,7 @@ const deleteBusTicket = async (req, res = response) => {
     if (!busTicket) {
       return res.status(404).json({
         ok: false,
-        message: 'BusTicket not found',
+        message: responseMessages.msgBusTicketNotFoud,
       });
     }
 
@@ -139,7 +138,7 @@ const deleteBusTicket = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

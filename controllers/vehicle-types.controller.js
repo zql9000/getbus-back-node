@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const VehicleType = require('../models/VehicleType');
 
 const listVehicleTypes = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listVehicleTypes = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -31,7 +32,7 @@ const getVehicleType = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -43,7 +44,7 @@ const newVehicleType = async (req, res = response) => {
     if (existingVehicleType) {
       return res.status(409).json({
         ok: false,
-        message: 'A vehicleType with this name already exists',
+        message: responseMessages.msgVehicleTypeExists,
       });
     }
 
@@ -58,7 +59,7 @@ const newVehicleType = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -68,13 +69,13 @@ const modifyVehicleType = async (req, res = response) => {
     const vehicleTypeId = req.params.id;
     const existingVehicleType = await VehicleType.find({
       name: req.body.name,
-      _id: { $not: { vehicleTypeId } },
+      _id: { $ne: { vehicleTypeId } },
     });
 
     if (existingVehicleType) {
       return res.status(409).json({
         ok: false,
-        message: 'A vehicleType with this name already exists',
+        message: responseMessages.msgVehicleTypeExists,
       });
     }
 
@@ -83,7 +84,7 @@ const modifyVehicleType = async (req, res = response) => {
     if (!vehicleType) {
       return res.status(404).json({
         ok: false,
-        message: 'VehicleType not found',
+        message: responseMessages.msgVehicleTypeNotFound,
       });
     }
 
@@ -105,7 +106,7 @@ const modifyVehicleType = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -118,7 +119,7 @@ const deleteVehicleType = async (req, res = response) => {
     if (!vehicleType) {
       return res.status(404).json({
         ok: false,
-        message: 'VehicleType not found',
+        message: responseMessages.msgVehicleTypeNotFound,
       });
     }
 
@@ -134,7 +135,7 @@ const deleteVehicleType = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

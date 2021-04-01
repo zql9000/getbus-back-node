@@ -1,5 +1,6 @@
 const { response } = require('express');
 const BusStation = require('../models/BusStation');
+const { responseMessages } = require('../helpers/spanishMessages');
 
 const listBusStations = async (req, res = response) => {
   try {
@@ -13,7 +14,7 @@ const listBusStations = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -33,7 +34,7 @@ const getBusStation = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -63,7 +64,7 @@ const newBusStation = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -74,13 +75,13 @@ const modifyBusStation = async (req, res = response) => {
     const existingBusStation = await BusStation.find({
       name: req.body.name,
       cityId: req.body.cityId,
-      _id: { $not: { busStationId } },
+      _id: { $ne: { busStationId } },
     });
 
     if (existingBusStation) {
       return res.status(409).json({
         ok: false,
-        message: 'A busStation with this name and cityId already exists',
+        message: responseMessages.msgBusStationExists,
       });
     }
 
@@ -89,7 +90,7 @@ const modifyBusStation = async (req, res = response) => {
     if (!busStation) {
       return res.status(404).json({
         ok: false,
-        message: 'BusStation not found',
+        message: responseMessages.msgBusStationNotFound,
       });
     }
 
@@ -111,7 +112,7 @@ const modifyBusStation = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -124,7 +125,7 @@ const deleteBusStation = async (req, res = response) => {
     if (!busStation) {
       return res.status(404).json({
         ok: false,
-        message: 'BusStation not found',
+        message: responseMessages.msgBusStationNotFound,
       });
     }
 
@@ -138,7 +139,7 @@ const deleteBusStation = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

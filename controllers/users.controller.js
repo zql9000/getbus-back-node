@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const Person = require('../models/Person');
 const User = require('../models/User');
 
@@ -14,7 +15,7 @@ const listUsers = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -32,7 +33,7 @@ const getUser = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -44,7 +45,7 @@ const newUser = async (req, res = response) => {
     if (existingUser) {
       return res.status(409).json({
         ok: false,
-        message: 'A user with this username already exists',
+        message: responseMessages.msgUserExists,
       });
     }
 
@@ -63,7 +64,7 @@ const newUser = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -73,13 +74,13 @@ const modifyUser = async (req, res = response) => {
     const userId = req.params.id;
     const existingUser = await User.find({
       username: req.body.username,
-      _id: { $not: { userId } },
+      _id: { $ne: { userId } },
     });
 
     if (existingUser) {
       return res.status(409).json({
         ok: false,
-        message: 'A user with this username already exists',
+        message: responseMessages.msgUserExists,
       });
     }
 
@@ -88,7 +89,7 @@ const modifyUser = async (req, res = response) => {
     if (!user) {
       return res.status(404).json({
         ok: false,
-        message: 'User not found',
+        message: responseMessages.msgUserNotFound,
       });
     }
 
@@ -107,7 +108,7 @@ const modifyUser = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -120,7 +121,7 @@ const deleteUser = async (req, res = response) => {
     if (!user) {
       return res.status(404).json({
         ok: false,
-        message: 'User not found',
+        message: responseMessages.msgUserNotFound,
       });
     }
 
@@ -135,7 +136,7 @@ const deleteUser = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const Invoice = require('../models/Invoice');
 
 const listInvoices = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listInvoices = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -31,7 +32,7 @@ const getInvoice = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -43,7 +44,7 @@ const newInvoice = async (req, res = response) => {
     if (existingInvoice) {
       return res.status(409).json({
         ok: false,
-        message: 'A invoice with this number already exists',
+        message: responseMessages.msgInvoiceExists,
       });
     }
 
@@ -60,7 +61,7 @@ const newInvoice = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -70,13 +71,13 @@ const modifyInvoice = async (req, res = response) => {
     const invoiceId = req.params.id;
     const existingInvoice = await Invoice.find({
       number: req.body.number,
-      _id: { $not: { invoiceId } },
+      _id: { $ne: { invoiceId } },
     });
 
     if (existingInvoice) {
       return res.status(409).json({
         ok: false,
-        message: 'A invoice with this number already exists',
+        message: responseMessages.msgInvoiceExists,
       });
     }
 
@@ -85,7 +86,7 @@ const modifyInvoice = async (req, res = response) => {
     if (!invoice) {
       return res.status(404).json({
         ok: false,
-        message: 'Invoice not found',
+        message: responseMessages.msgInvoiceNotFoud,
       });
     }
 
@@ -109,7 +110,7 @@ const modifyInvoice = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -122,7 +123,7 @@ const deleteInvoice = async (req, res = response) => {
     if (!invoice) {
       return res.status(404).json({
         ok: false,
-        message: 'Invoice not found',
+        message: responseMessages.msgInvoiceNotFoud,
       });
     }
 
@@ -136,7 +137,7 @@ const deleteInvoice = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

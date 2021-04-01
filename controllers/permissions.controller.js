@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const Permission = require('../models/Permission');
 
 const listPermissions = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listPermissions = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -31,7 +32,7 @@ const getPermission = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -43,7 +44,7 @@ const newPermission = async (req, res = response) => {
     if (existingPermission) {
       return res.status(409).json({
         ok: false,
-        message: 'A permission with this name already exists',
+        message: responseMessages.msgPermissionExists,
       });
     }
 
@@ -58,7 +59,7 @@ const newPermission = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -68,13 +69,13 @@ const modifyPermission = async (req, res = response) => {
     const permissionId = req.params.id;
     const existingPermission = await Permission.find({
       name: req.body.name,
-      _id: { $not: { permissionId } },
+      _id: { $ne: { permissionId } },
     });
 
     if (existingPermission) {
       return res.status(409).json({
         ok: false,
-        message: 'A permission with this name already exists',
+        message: responseMessages.msgPermissionExists,
       });
     }
 
@@ -83,7 +84,7 @@ const modifyPermission = async (req, res = response) => {
     if (!permission) {
       return res.status(404).json({
         ok: false,
-        message: 'Permission not found',
+        message: responseMessages.msgPermissionNotFound,
       });
     }
 
@@ -105,7 +106,7 @@ const modifyPermission = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -118,7 +119,7 @@ const deletePermission = async (req, res = response) => {
     if (!permission) {
       return res.status(404).json({
         ok: false,
-        message: 'Permission not found',
+        message: responseMessages.msgPermissionNotFound,
       });
     }
 
@@ -132,7 +133,7 @@ const deletePermission = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

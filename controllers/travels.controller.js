@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const Travel = require('../models/Travel');
 
 const listTravels = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listTravels = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -31,7 +32,7 @@ const getTravel = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -43,7 +44,7 @@ const newTravel = async (req, res = response) => {
     if (existingTravel) {
       return res.status(409).json({
         ok: false,
-        message: 'A travel with this name already exists',
+        message: responseMessages.msgTravelExists,
       });
     }
 
@@ -58,7 +59,7 @@ const newTravel = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -68,13 +69,13 @@ const modifyTravel = async (req, res = response) => {
     const travelId = req.params.id;
     const existingTravel = await Travel.find({
       name: req.body.name,
-      _id: { $not: { travelId } },
+      _id: { $ne: { travelId } },
     });
 
     if (existingTravel) {
       return res.status(409).json({
         ok: false,
-        message: 'A travel with this name already exists',
+        message: responseMessages.msgTravelExists,
       });
     }
 
@@ -83,7 +84,7 @@ const modifyTravel = async (req, res = response) => {
     if (!travel) {
       return res.status(404).json({
         ok: false,
-        message: 'Travel not found',
+        message: responseMessages.msgTravelNotFound,
       });
     }
 
@@ -101,7 +102,7 @@ const modifyTravel = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -114,7 +115,7 @@ const deleteTravel = async (req, res = response) => {
     if (!travel) {
       return res.status(404).json({
         ok: false,
-        message: 'Travel not found',
+        message: responseMessages.msgTravelNotFound,
       });
     }
 
@@ -128,7 +129,7 @@ const deleteTravel = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const Province = require('../models/Province');
 
 const listProvinces = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listProvinces = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -31,19 +32,19 @@ const getProvince = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
 
 const newProvince = async (req, res = response) => {
   try {
-    const existingProvince = await Province.find({ name: req.body.name });
+    const existingProvince = await Province.findOne({ name: req.body.name });
 
     if (existingProvince) {
       return res.status(409).json({
         ok: false,
-        message: 'A province with this name already exists',
+        message: responseMessages.msgProvinceExists,
       });
     }
 
@@ -58,7 +59,7 @@ const newProvince = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -66,15 +67,14 @@ const newProvince = async (req, res = response) => {
 const modifyProvince = async (req, res = response) => {
   try {
     const provinceId = req.params.id;
-    const existingProvince = await Province.find({
+    const existingProvince = await Province.findOne({
       name: req.body.name,
-      _id: { $not: { provinceId } },
     });
 
     if (existingProvince) {
       return res.status(409).json({
         ok: false,
-        message: 'A province with this name already exists',
+        message: responseMessages.msgProvinceExists,
       });
     }
 
@@ -83,7 +83,7 @@ const modifyProvince = async (req, res = response) => {
     if (!province) {
       return res.status(404).json({
         ok: false,
-        message: 'Province not found',
+        message: responseMessages.msgProvinceNotFound,
       });
     }
 
@@ -105,7 +105,7 @@ const modifyProvince = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -118,7 +118,7 @@ const deleteProvince = async (req, res = response) => {
     if (!province) {
       return res.status(404).json({
         ok: false,
-        message: 'Province not found',
+        message: responseMessages.msgProvinceNotFound,
       });
     }
 
@@ -132,7 +132,7 @@ const deleteProvince = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

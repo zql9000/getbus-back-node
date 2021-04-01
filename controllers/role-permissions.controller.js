@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const RolePermission = require('../models/RolePermission');
 
 const listRolePermissions = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listRolePermissions = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -31,7 +32,7 @@ const getRolePermission = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -46,8 +47,7 @@ const newRolePermission = async (req, res = response) => {
     if (existingRolePermission) {
       return res.status(409).json({
         ok: false,
-        message:
-          'A role-permission with this role and permission already exists',
+        message: responseMessages.msgRolePermissionExists,
       });
     }
 
@@ -62,7 +62,7 @@ const newRolePermission = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -73,14 +73,13 @@ const modifyRolePermission = async (req, res = response) => {
     const existingRolePermission = await RolePermission.find({
       role: req.body.role,
       permission: req.body.permission,
-      _id: { $not: { rolePermissionId } },
+      _id: { $ne: { rolePermissionId } },
     });
 
     if (existingRolePermission) {
       return res.status(409).json({
         ok: false,
-        message:
-          'A role-permission with this role and permission already exists',
+        message: responseMessages.msgRolePermissionExists,
       });
     }
 
@@ -89,7 +88,7 @@ const modifyRolePermission = async (req, res = response) => {
     if (!rolePermission) {
       return res.status(404).json({
         ok: false,
-        message: 'RolePermission not found',
+        message: responseMessages.msgRolePermissionNotFound,
       });
     }
 
@@ -111,7 +110,7 @@ const modifyRolePermission = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -124,7 +123,7 @@ const deleteRolePermission = async (req, res = response) => {
     if (!rolePermission) {
       return res.status(404).json({
         ok: false,
-        message: 'RolePermission not found',
+        message: responseMessages.msgRolePermissionNotFound,
       });
     }
 
@@ -140,7 +139,7 @@ const deleteRolePermission = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

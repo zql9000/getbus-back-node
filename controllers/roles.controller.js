@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const Role = require('../models/Role');
 
 const listRoles = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listRoles = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -31,7 +32,7 @@ const getRole = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -43,7 +44,7 @@ const newRole = async (req, res = response) => {
     if (existingRole) {
       return res.status(409).json({
         ok: false,
-        message: 'A role with this name already exists',
+        message: responseMessages.msgRoleExists,
       });
     }
 
@@ -58,7 +59,7 @@ const newRole = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -68,13 +69,13 @@ const modifyRole = async (req, res = response) => {
     const roleId = req.params.id;
     const existingRole = await Role.find({
       name: req.body.name,
-      _id: { $not: { roleId } },
+      _id: { $ne: { roleId } },
     });
 
     if (existingRole) {
       return res.status(409).json({
         ok: false,
-        message: 'A role with this name already exists',
+        message: responseMessages.msgRoleExists,
       });
     }
 
@@ -83,7 +84,7 @@ const modifyRole = async (req, res = response) => {
     if (!role) {
       return res.status(404).json({
         ok: false,
-        message: 'Role not found',
+        message: responseMessages.msgRoleNotFound,
       });
     }
 
@@ -101,7 +102,7 @@ const modifyRole = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -114,7 +115,7 @@ const deleteRole = async (req, res = response) => {
     if (!role) {
       return res.status(404).json({
         ok: false,
-        message: 'Role not found',
+        message: responseMessages.msgRoleNotFound,
       });
     }
 
@@ -128,7 +129,7 @@ const deleteRole = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

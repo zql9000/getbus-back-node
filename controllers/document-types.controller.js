@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const DocumentType = require('../models/DocumentType');
 
 const listDocumentTypes = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listDocumentTypes = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -31,7 +32,7 @@ const getDocumentType = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -45,7 +46,7 @@ const newDocumentType = async (req, res = response) => {
     if (existingDocumentType) {
       return res.status(409).json({
         ok: false,
-        message: 'A documentType with this name or shortName already exists',
+        message: responseMessages.msgDocumentTypeExists,
       });
     }
 
@@ -60,7 +61,7 @@ const newDocumentType = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -70,13 +71,13 @@ const modifyDocumentType = async (req, res = response) => {
     const documentTypeId = req.params.id;
     const existingDocumentType = await DocumentType.find({
       $or: [{ name: req.body.name }, { shotName: req.body.shotName }],
-      _id: { $not: { documentTypeId } },
+      _id: { $ne: { documentTypeId } },
     });
 
     if (existingDocumentType) {
       return res.status(409).json({
         ok: false,
-        message: 'A documentType with this name or shortName already exists',
+        message: responseMessages.msgDocumentTypeExists,
       });
     }
 
@@ -85,7 +86,7 @@ const modifyDocumentType = async (req, res = response) => {
     if (!documentType) {
       return res.status(404).json({
         ok: false,
-        message: 'DocumentType not found',
+        message: responseMessages.msgDocumentTypeNotFoud,
       });
     }
 
@@ -107,7 +108,7 @@ const modifyDocumentType = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -120,7 +121,7 @@ const deleteDocumentType = async (req, res = response) => {
     if (!documentType) {
       return res.status(404).json({
         ok: false,
-        message: 'DocumentType not found',
+        message: responseMessages.msgDocumentTypeNotFoud,
       });
     }
 
@@ -136,7 +137,7 @@ const deleteDocumentType = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

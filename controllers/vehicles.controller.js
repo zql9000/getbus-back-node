@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const Vehicle = require('../models/Vehicle');
 
 const listVehicles = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listVehicles = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -31,7 +32,7 @@ const getVehicle = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -47,8 +48,7 @@ const newVehicle = async (req, res = response) => {
     if (existingVehicle) {
       return res.status(409).json({
         ok: false,
-        message:
-          'A vehicle with this internNumber, transportCompanyId and vechicleTypeId already exists',
+        message: responseMessages.msgVehicleExists,
       });
     }
 
@@ -63,7 +63,7 @@ const newVehicle = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -75,14 +75,13 @@ const modifyVehicle = async (req, res = response) => {
       internNumber: req.body.internNumber,
       transportCompanyId: req.body.transportCompanyId,
       vechicleTypeId: req.body.vechicleTypeId,
-      _id: { $not: { vehicleId } },
+      _id: { $ne: { vehicleId } },
     });
 
     if (existingVehicle) {
       return res.status(409).json({
         ok: false,
-        message:
-          'A vehicle with this internNumber, transportCompanyId and vechicleTypeId already exists',
+        message: responseMessages.msgVehicleExists,
       });
     }
 
@@ -91,7 +90,7 @@ const modifyVehicle = async (req, res = response) => {
     if (!vehicle) {
       return res.status(404).json({
         ok: false,
-        message: 'Vehicle not found',
+        message: responseMessages.msgVehicleNotFound,
       });
     }
 
@@ -113,7 +112,7 @@ const modifyVehicle = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -126,7 +125,7 @@ const deleteVehicle = async (req, res = response) => {
     if (!vehicle) {
       return res.status(404).json({
         ok: false,
-        message: 'Vehicle not found',
+        message: responseMessages.msgVehicleNotFound,
       });
     }
 
@@ -140,7 +139,7 @@ const deleteVehicle = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const City = require('../models/City');
 
 const listCities = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listCities = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -31,7 +32,7 @@ const getCity = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -46,7 +47,7 @@ const newCity = async (req, res = response) => {
     if (existingCity) {
       return res.status(409).json({
         ok: false,
-        message: 'A city with this name and provinceId already exists',
+        message: responseMessages.msgCityExists,
       });
     }
 
@@ -61,7 +62,7 @@ const newCity = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -72,13 +73,13 @@ const modifyCity = async (req, res = response) => {
     const existingCity = await City.find({
       name: req.body.name,
       provinceId: req.body.provinceId,
-      _id: { $not: { cityId } },
+      _id: { $ne: { cityId } },
     });
 
     if (existingCity) {
       return res.status(409).json({
         ok: false,
-        message: 'A city with this name and provinceId already exists',
+        message: responseMessages.msgCityExists,
       });
     }
 
@@ -87,7 +88,7 @@ const modifyCity = async (req, res = response) => {
     if (!city) {
       return res.status(404).json({
         ok: false,
-        message: 'City not found',
+        message: responseMessages.msgCityNotFoud,
       });
     }
 
@@ -105,7 +106,7 @@ const modifyCity = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -118,7 +119,7 @@ const deleteCity = async (req, res = response) => {
     if (!city) {
       return res.status(404).json({
         ok: false,
-        message: 'City not found',
+        message: responseMessages.msgCityNotFoud,
       });
     }
 
@@ -132,7 +133,7 @@ const deleteCity = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

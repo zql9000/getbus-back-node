@@ -1,6 +1,7 @@
 const { response } = require('express');
 const Person = require('../models/Person');
 const Passenger = require('../models/Passenger');
+const { responseMessages } = require('../helpers/spanishMessages');
 
 const listPassengers = async (req, res = response) => {
   try {
@@ -14,7 +15,7 @@ const listPassengers = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -34,7 +35,7 @@ const getPassenger = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -49,8 +50,7 @@ const newPassenger = async (req, res = response) => {
     if (existingPassenger) {
       return res.status(409).json({
         ok: false,
-        message:
-          'A passenger with this documentTypeId and documentNumber already exists',
+        message: responseMessages.msgPassengerExists,
       });
     }
 
@@ -69,7 +69,7 @@ const newPassenger = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -80,14 +80,13 @@ const modifyPassenger = async (req, res = response) => {
     const existingPassenger = await Passenger.find({
       documentTypeId: req.body.documentTypeId,
       documentNumber: req.body.documentNumber,
-      _id: { $not: { passengerId } },
+      _id: { $ne: { passengerId } },
     });
 
     if (existingPassenger) {
       return res.status(409).json({
         ok: false,
-        message:
-          'A passenger with this documentTypeId and documentNumber already exists',
+        message: responseMessages.msgPassengerExists,
       });
     }
 
@@ -96,7 +95,7 @@ const modifyPassenger = async (req, res = response) => {
     if (!passenger) {
       return res.status(404).json({
         ok: false,
-        message: 'Passenger not found',
+        message: responseMessages.msgPassengerNotFoud,
       });
     }
 
@@ -119,7 +118,7 @@ const modifyPassenger = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -132,7 +131,7 @@ const deletePassenger = async (req, res = response) => {
     if (!passenger) {
       return res.status(404).json({
         ok: false,
-        message: 'Passenger not found',
+        message: responseMessages.msgPassengerNotFoud,
       });
     }
 
@@ -147,7 +146,7 @@ const deletePassenger = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };

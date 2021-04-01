@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { responseMessages } = require('../helpers/spanishMessages');
 const TransportCompany = require('../models/TransportCompany');
 
 const listTransportCompanies = async (req, res = response) => {
@@ -13,7 +14,7 @@ const listTransportCompanies = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -33,7 +34,7 @@ const getTransportCompany = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -47,7 +48,7 @@ const newTransportCompany = async (req, res = response) => {
     if (existingTransportCompany) {
       return res.status(409).json({
         ok: false,
-        message: 'A transportCompany with this name already exists',
+        message: responseMessages.msgTransportCompanyExists,
       });
     }
 
@@ -62,7 +63,7 @@ const newTransportCompany = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -72,13 +73,13 @@ const modifyTransportCompany = async (req, res = response) => {
     const transportCompanyId = req.params.id;
     const existingTransportCompany = await TransportCompany.find({
       name: req.body.name,
-      _id: { $not: { transportCompanyId } },
+      _id: { $ne: { transportCompanyId } },
     });
 
     if (existingTransportCompany) {
       return res.status(409).json({
         ok: false,
-        message: 'A transportCompany with this name already exists',
+        message: responseMessages.msgTransportCompanyExists,
       });
     }
 
@@ -89,7 +90,7 @@ const modifyTransportCompany = async (req, res = response) => {
     if (!transportCompany) {
       return res.status(404).json({
         ok: false,
-        message: 'TransportCompany not found',
+        message: responseMessages.msgTransportCompanyNotFound,
       });
     }
 
@@ -111,7 +112,7 @@ const modifyTransportCompany = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
@@ -126,7 +127,7 @@ const deleteTransportCompany = async (req, res = response) => {
     if (!transportCompany) {
       return res.status(404).json({
         ok: false,
-        message: 'TransportCompany not found',
+        message: responseMessages.msgTransportCompanyNotFound,
       });
     }
 
@@ -142,7 +143,7 @@ const deleteTransportCompany = async (req, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      message: 'Ask the administrator for information about this error',
+      message: responseMessages.msgAskAdmin,
     });
   }
 };
