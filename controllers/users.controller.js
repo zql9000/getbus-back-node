@@ -72,6 +72,15 @@ const newUser = async (req, res = response) => {
 const modifyUser = async (req, res = response) => {
   try {
     const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgUserNotFound,
+      });
+    }
+
     const existingUser = await User.findOne({
       username: req.body.username,
       _id: { $ne: userId },
@@ -84,21 +93,18 @@ const modifyUser = async (req, res = response) => {
       });
     }
 
-    const user = await User.findById(userId);
+    const newUser = { ...req.body };
+    await Person.findByIdAndUpdate(user.personId, newUser);
+    const updatedUser = await User.findByIdAndUpdate(userId, newUser, {
+      new: true,
+    }).populate('personId');
 
-    if (!user) {
+    if (!updatedUser) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgUserNotFound,
       });
     }
-
-    const newUser = { ...req.body };
-
-    await Person.findByIdAndUpdate(user.personId, newUser);
-    const updatedUser = await User.findByIdAndUpdate(userId, newUser, {
-      new: true,
-    }).populate('personId');
 
     return res.json({
       ok: true,

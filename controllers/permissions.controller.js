@@ -69,6 +69,15 @@ const newPermission = async (req, res = response) => {
 const modifyPermission = async (req, res = response) => {
   try {
     const permissionId = req.params.id;
+    const permission = await Permission.findById(permissionId);
+
+    if (!permission) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgPermissionNotFound,
+      });
+    }
+
     const existingPermission = await Permission.findOne({
       name: req.body.name,
       _id: { $ne: permissionId },
@@ -81,17 +90,7 @@ const modifyPermission = async (req, res = response) => {
       });
     }
 
-    const permission = await Permission.findById(permissionId);
-
-    if (!permission) {
-      return res.status(404).json({
-        ok: false,
-        message: responseMessages.msgPermissionNotFound,
-      });
-    }
-
     const newPermission = { ...req.body };
-
     const updatedPermission = await Permission.findByIdAndUpdate(
       permissionId,
       newPermission,
@@ -99,6 +98,13 @@ const modifyPermission = async (req, res = response) => {
         new: true,
       }
     );
+
+    if (!updatedPermission) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgPermissionNotFound,
+      });
+    }
 
     return res.json({
       ok: true,

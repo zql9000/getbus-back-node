@@ -77,6 +77,15 @@ const newPassenger = async (req, res = response) => {
 const modifyPassenger = async (req, res = response) => {
   try {
     const passengerId = req.params.id;
+    const passenger = await Passenger.findById(passengerId);
+
+    if (!passenger) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgPassengerNotFound,
+      });
+    }
+
     const existingPassenger = await Passenger.findOne({
       documentTypeId: req.body.documentTypeId,
       documentNumber: req.body.documentNumber,
@@ -90,17 +99,7 @@ const modifyPassenger = async (req, res = response) => {
       });
     }
 
-    const passenger = await Passenger.findById(passengerId);
-
-    if (!passenger) {
-      return res.status(404).json({
-        ok: false,
-        message: responseMessages.msgPassengerNotFoud,
-      });
-    }
-
     const newPassenger = { ...req.body };
-
     await Person.findByIdAndUpdate(passenger.personId, newPassenger);
     const updatedPassenger = await Passenger.findByIdAndUpdate(
       passengerId,
@@ -109,6 +108,13 @@ const modifyPassenger = async (req, res = response) => {
         new: true,
       }
     ).populate('personId');
+
+    if (!updatedPassenger) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgPassengerNotFound,
+      });
+    }
 
     return res.json({
       ok: true,
@@ -131,7 +137,7 @@ const deletePassenger = async (req, res = response) => {
     if (!deletedPassenger) {
       return res.status(404).json({
         ok: false,
-        message: responseMessages.msgPassengerNotFoud,
+        message: responseMessages.msgPassengerNotFound,
       });
     }
 

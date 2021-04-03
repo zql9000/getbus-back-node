@@ -67,6 +67,15 @@ const newSeat = async (req, res = response) => {
 const modifySeat = async (req, res = response) => {
   try {
     const seatId = req.params.id;
+    const seat = await Seat.findById(seatId);
+
+    if (!seat) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgSeatNotFound,
+      });
+    }
+
     const existingSeat = await Seat.findOne({
       number: req.body.number,
       _id: { $ne: seatId },
@@ -79,20 +88,17 @@ const modifySeat = async (req, res = response) => {
       });
     }
 
-    const seat = await Seat.findById(seatId);
+    const newSeat = { ...req.body };
+    const updatedSeat = await Seat.findByIdAndUpdate(seatId, newSeat, {
+      new: true,
+    });
 
-    if (!seat) {
+    if (!updatedSeat) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgSeatNotFound,
       });
     }
-
-    const newSeat = { ...req.body };
-
-    const updatedSeat = await Seat.findByIdAndUpdate(seatId, newSeat, {
-      new: true,
-    });
 
     return res.json({
       ok: true,

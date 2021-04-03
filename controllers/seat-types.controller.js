@@ -67,6 +67,15 @@ const newSeatType = async (req, res = response) => {
 const modifySeatType = async (req, res = response) => {
   try {
     const seatTypeId = req.params.id;
+    const seatType = await SeatType.findById(seatTypeId);
+
+    if (!seatType) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgSeatTypeNotFound,
+      });
+    }
+
     const existingSeatType = await SeatType.findOne({
       name: req.body.name,
       _id: { $ne: seatTypeId },
@@ -79,17 +88,7 @@ const modifySeatType = async (req, res = response) => {
       });
     }
 
-    const seatType = await SeatType.findById(seatTypeId);
-
-    if (!seatType) {
-      return res.status(404).json({
-        ok: false,
-        message: responseMessages.msgSeatTypeNotFound,
-      });
-    }
-
     const newSeatType = { ...req.body };
-
     const updatedSeatType = await SeatType.findByIdAndUpdate(
       seatTypeId,
       newSeatType,
@@ -97,6 +96,13 @@ const modifySeatType = async (req, res = response) => {
         new: true,
       }
     );
+
+    if (!updatedSeatType) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgSeatTypeNotFound,
+      });
+    }
 
     return res.json({
       ok: true,

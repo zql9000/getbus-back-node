@@ -69,6 +69,15 @@ const newInvoice = async (req, res = response) => {
 const modifyInvoice = async (req, res = response) => {
   try {
     const invoiceId = req.params.id;
+    const invoice = await Invoice.findById(invoiceId);
+
+    if (!invoice) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgInvoiceNotFound,
+      });
+    }
+
     const existingInvoice = await Invoice.findOne({
       number: req.body.number,
       _id: { $ne: invoiceId },
@@ -81,19 +90,9 @@ const modifyInvoice = async (req, res = response) => {
       });
     }
 
-    const invoice = await Invoice.findById(invoiceId);
-
-    if (!invoice) {
-      return res.status(404).json({
-        ok: false,
-        message: responseMessages.msgInvoiceNotFoud,
-      });
-    }
-
     const newInvoice = { ...req.body };
     newInvoice.userId = req.userId;
     newInvoice.totalAmount = invoice.UnitPrice * invoice.quantity;
-
     const updatedInvoice = await Invoice.findByIdAndUpdate(
       invoiceId,
       newInvoice,
@@ -101,6 +100,13 @@ const modifyInvoice = async (req, res = response) => {
         new: true,
       }
     );
+
+    if (!updatedInvoice) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgInvoiceNotFoud,
+      });
+    }
 
     return res.json({
       ok: true,

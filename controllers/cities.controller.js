@@ -95,6 +95,15 @@ const newCity = async (req, res = response) => {
 const modifyCity = async (req, res = response) => {
   try {
     const cityId = req.params.id;
+    const city = await City.findById(cityId);
+
+    if (!city) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgCityNotFound,
+      });
+    }
+
     const existingCity = await City.findOne({
       name: req.body.name,
       provinceId: req.body.provinceId,
@@ -111,26 +120,23 @@ const modifyCity = async (req, res = response) => {
     const existingProvince = await Province.findById(req.body.provinceId);
 
     if (!existingProvince) {
-      return res.status(409).json({
+      return res.status(404).json({
         ok: false,
         message: responseMessages.msgProvinceNotFound,
       });
     }
 
-    const city = await City.findById(cityId);
+    const newCity = { ...req.body };
+    const updatedCity = await City.findByIdAndUpdate(cityId, newCity, {
+      new: true,
+    });
 
-    if (!city) {
+    if (!updatedCity) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgCityNotFoud,
       });
     }
-
-    const newCity = { ...req.body };
-
-    const updatedCity = await City.findByIdAndUpdate(cityId, newCity, {
-      new: true,
-    });
 
     return res.json({
       ok: true,

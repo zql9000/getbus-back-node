@@ -67,6 +67,15 @@ const newRole = async (req, res = response) => {
 const modifyRole = async (req, res = response) => {
   try {
     const roleId = req.params.id;
+    const role = await Role.findById(roleId);
+
+    if (!role) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgRoleNotFound,
+      });
+    }
+
     const existingRole = await Role.findOne({
       name: req.body.name,
       _id: { $ne: roleId },
@@ -79,20 +88,17 @@ const modifyRole = async (req, res = response) => {
       });
     }
 
-    const role = await Role.findById(roleId);
+    const newRole = { ...req.body };
+    const updatedRole = await Role.findByIdAndUpdate(roleId, newRole, {
+      new: true,
+    });
 
-    if (!role) {
+    if (!updatedRole) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgRoleNotFound,
       });
     }
-
-    const newRole = { ...req.body };
-
-    const updatedRole = await Role.findByIdAndUpdate(roleId, newRole, {
-      new: true,
-    });
 
     return res.json({
       ok: true,

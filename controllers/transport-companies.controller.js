@@ -71,6 +71,17 @@ const newTransportCompany = async (req, res = response) => {
 const modifyTransportCompany = async (req, res = response) => {
   try {
     const transportCompanyId = req.params.id;
+    const transportCompany = await TransportCompany.findById(
+      transportCompanyId
+    );
+
+    if (!transportCompany) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgTransportCompanyNotFound,
+      });
+    }
+
     const existingTransportCompany = await TransportCompany.findOne({
       name: req.body.name,
       _id: { $ne: transportCompanyId },
@@ -83,19 +94,7 @@ const modifyTransportCompany = async (req, res = response) => {
       });
     }
 
-    const transportCompany = await TransportCompany.findById(
-      transportCompanyId
-    );
-
-    if (!transportCompany) {
-      return res.status(404).json({
-        ok: false,
-        message: responseMessages.msgTransportCompanyNotFound,
-      });
-    }
-
     const newTransportCompany = { ...req.body };
-
     const updatedTransportCompany = await TransportCompany.findByIdAndUpdate(
       transportCompanyId,
       newTransportCompany,
@@ -103,6 +102,12 @@ const modifyTransportCompany = async (req, res = response) => {
         new: true,
       }
     );
+    if (!updatedTransportCompany) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgTransportCompanyNotFound,
+      });
+    }
 
     return res.json({
       ok: true,

@@ -74,6 +74,15 @@ const newSection = async (req, res = response) => {
 const modifySection = async (req, res = response) => {
   try {
     const sectionId = req.params.id;
+    const section = await Section.findById(sectionId);
+
+    if (!section) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgSectionNotFound,
+      });
+    }
+
     const existingSection = await Section.findOne({
       busStationId: req.body.busStationId,
       busStationIdNext: req.body.busStationIdNext,
@@ -87,17 +96,7 @@ const modifySection = async (req, res = response) => {
       });
     }
 
-    const section = await Section.findById(sectionId);
-
-    if (!section) {
-      return res.status(404).json({
-        ok: false,
-        message: responseMessages.msgSectionNotFound,
-      });
-    }
-
     const newSection = { ...req.body };
-
     const updatedSection = await Section.findByIdAndUpdate(
       sectionId,
       newSection,
@@ -105,6 +104,13 @@ const modifySection = async (req, res = response) => {
         new: true,
       }
     );
+
+    if (!updatedSection) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgSectionNotFound,
+      });
+    }
 
     return res.json({
       ok: true,

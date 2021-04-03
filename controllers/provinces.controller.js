@@ -67,6 +67,15 @@ const newProvince = async (req, res = response) => {
 const modifyProvince = async (req, res = response) => {
   try {
     const provinceId = req.params.id;
+    const province = await Province.findById(provinceId);
+
+    if (!province) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgProvinceNotFound,
+      });
+    }
+
     const existingProvince = await Province.findOne({
       name: req.body.name,
       _id: { $ne: provinceId },
@@ -79,17 +88,7 @@ const modifyProvince = async (req, res = response) => {
       });
     }
 
-    const province = await Province.findById(provinceId);
-
-    if (!province) {
-      return res.status(404).json({
-        ok: false,
-        message: responseMessages.msgProvinceNotFound,
-      });
-    }
-
     const newProvince = { ...req.body };
-
     const updatedProvince = await Province.findByIdAndUpdate(
       provinceId,
       newProvince,
@@ -97,6 +96,13 @@ const modifyProvince = async (req, res = response) => {
         new: true,
       }
     );
+
+    if (!updatedProvince) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgProvinceNotFound,
+      });
+    }
 
     return res.json({
       ok: true,

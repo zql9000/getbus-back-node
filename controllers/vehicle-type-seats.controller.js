@@ -71,6 +71,15 @@ const newVehicleTypeSeat = async (req, res = response) => {
 const modifyVehicleTypeSeat = async (req, res = response) => {
   try {
     const vehicleTypeSeatId = req.params.id;
+    const vehicleTypeSeat = await VehicleTypeSeat.findById(vehicleTypeSeatId);
+
+    if (!vehicleTypeSeat) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgVehicleTypeSeatNotFound,
+      });
+    }
+
     const existingVehicleTypeSeat = await VehicleTypeSeat.findOne({
       floor: req.body.floor,
       locationX: req.body.locationX,
@@ -85,17 +94,7 @@ const modifyVehicleTypeSeat = async (req, res = response) => {
       });
     }
 
-    const vehicleTypeSeat = await VehicleTypeSeat.findById(vehicleTypeSeatId);
-
-    if (!vehicleTypeSeat) {
-      return res.status(404).json({
-        ok: false,
-        message: responseMessages.msgVehicleTypeSeatNotFound,
-      });
-    }
-
     const newVehicleTypeSeat = { ...req.body };
-
     const updatedVehicleTypeSeat = await VehicleTypeSeat.findByIdAndUpdate(
       vehicleTypeSeatId,
       newVehicleTypeSeat,
@@ -103,6 +102,13 @@ const modifyVehicleTypeSeat = async (req, res = response) => {
         new: true,
       }
     );
+
+    if (!updatedVehicleTypeSeat) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgVehicleTypeSeatNotFound,
+      });
+    }
 
     return res.json({
       ok: true,

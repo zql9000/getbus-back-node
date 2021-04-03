@@ -70,6 +70,15 @@ const newDocumentType = async (req, res = response) => {
 const modifyDocumentType = async (req, res = response) => {
   try {
     const documentTypeId = req.params.id;
+    const documentType = await DocumentType.findById(documentTypeId);
+
+    if (!documentType) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgDocumentTypeNotFound,
+      });
+    }
+
     const existingDocumentType = await DocumentType.findOne({
       $or: [{ name: req.body.name }, { shortName: req.body.shortName }],
       _id: { $ne: documentTypeId },
@@ -82,17 +91,7 @@ const modifyDocumentType = async (req, res = response) => {
       });
     }
 
-    const documentType = await DocumentType.findById(documentTypeId);
-
-    if (!documentType) {
-      return res.status(404).json({
-        ok: false,
-        message: responseMessages.msgDocumentTypeNotFoud,
-      });
-    }
-
     const newDocumentType = { ...req.body };
-
     const updatedDocumentType = await DocumentType.findByIdAndUpdate(
       documentTypeId,
       newDocumentType,
@@ -100,6 +99,13 @@ const modifyDocumentType = async (req, res = response) => {
         new: true,
       }
     );
+
+    if (!updatedDocumentType) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgDocumentTypeNotFoud,
+      });
+    }
 
     return res.json({
       ok: true,

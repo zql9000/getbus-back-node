@@ -71,6 +71,15 @@ const newBusTicket = async (req, res = response) => {
 const modifyBusTicket = async (req, res = response) => {
   try {
     const busTicketId = req.params.id;
+    const busTicket = await BusTicket.findById(busTicketId);
+
+    if (!busTicket) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgBusTicketNotFoud,
+      });
+    }
+
     const existingBusTicket = await BusTicket.findOne({
       passengerId: req.body.passengerId,
       invoiceId: req.body.invoiceId,
@@ -84,17 +93,7 @@ const modifyBusTicket = async (req, res = response) => {
       });
     }
 
-    const busTicket = await BusTicket.findById(busTicketId);
-
-    if (!busTicket) {
-      return res.status(404).json({
-        ok: false,
-        message: responseMessages.msgBusTicketNotFoud,
-      });
-    }
-
     const newBusTicket = { ...req.body };
-
     const updatedBusTicket = await BusTicket.findByIdAndUpdate(
       busTicketId,
       newBusTicket,
@@ -102,6 +101,13 @@ const modifyBusTicket = async (req, res = response) => {
         new: true,
       }
     );
+
+    if (!updatedBusTicket) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgBusTicketNotFoud,
+      });
+    }
 
     return res.json({
       ok: true,

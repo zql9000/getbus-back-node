@@ -67,6 +67,15 @@ const newTravel = async (req, res = response) => {
 const modifyTravel = async (req, res = response) => {
   try {
     const travelId = req.params.id;
+    const travel = await Travel.findById(travelId);
+
+    if (!travel) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgTravelNotFound,
+      });
+    }
+
     const existingTravel = await Travel.findOne({
       name: req.body.name,
       _id: { $ne: travelId },
@@ -79,20 +88,17 @@ const modifyTravel = async (req, res = response) => {
       });
     }
 
-    const travel = await Travel.findById(travelId);
+    const newTravel = { ...req.body };
+    const updatedTravel = await Travel.findByIdAndUpdate(travelId, newTravel, {
+      new: true,
+    });
 
-    if (!travel) {
+    if (!updatedTravel) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgTravelNotFound,
       });
     }
-
-    const newTravel = { ...req.body };
-
-    const updatedTravel = await Travel.findByIdAndUpdate(travelId, newTravel, {
-      new: true,
-    });
 
     return res.json({
       ok: true,

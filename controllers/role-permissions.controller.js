@@ -70,6 +70,15 @@ const newRolePermission = async (req, res = response) => {
 const modifyRolePermission = async (req, res = response) => {
   try {
     const rolePermissionId = req.params.id;
+    const rolePermission = await RolePermission.findById(rolePermissionId);
+
+    if (!rolePermission) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgRolePermissionNotFound,
+      });
+    }
+
     const existingRolePermission = await RolePermission.findOne({
       role: req.body.role,
       permission: req.body.permission,
@@ -83,17 +92,7 @@ const modifyRolePermission = async (req, res = response) => {
       });
     }
 
-    const rolePermission = await RolePermission.findById(rolePermissionId);
-
-    if (!rolePermission) {
-      return res.status(404).json({
-        ok: false,
-        message: responseMessages.msgRolePermissionNotFound,
-      });
-    }
-
     const newRolePermission = { ...req.body };
-
     const updatedRolePermission = await RolePermission.findByIdAndUpdate(
       rolePermissionId,
       newRolePermission,
@@ -101,6 +100,13 @@ const modifyRolePermission = async (req, res = response) => {
         new: true,
       }
     );
+
+    if (!updatedRolePermission) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgRolePermissionNotFound,
+      });
+    }
 
     return res.json({
       ok: true,
