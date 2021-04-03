@@ -1,6 +1,7 @@
 const { response } = require('express');
 const BusStation = require('../models/BusStation');
 const { responseMessages } = require('../helpers/spanishMessages');
+const City = require('../models/City');
 
 const listBusStations = async (req, res = response) => {
   try {
@@ -8,7 +9,12 @@ const listBusStations = async (req, res = response) => {
 
     return res.json({
       ok: true,
-      busStations,
+      busStations: busStations.map((busStation) => ({
+        id: busStation.id,
+        name: busStation.name,
+        cityId: busStation.cityId._id,
+        cityName: busStation.cityId.name,
+      })),
     });
   } catch (error) {
     console.log(error);
@@ -28,7 +34,12 @@ const getBusStation = async (req, res = response) => {
 
     return res.json({
       ok: true,
-      busStation,
+      busStation: {
+        id: busStation.id,
+        name: busStation.name,
+        cityId: busStation.cityId._id,
+        cityName: busStation.cityId.name,
+      },
     });
   } catch (error) {
     console.log(error);
@@ -53,12 +64,26 @@ const newBusStation = async (req, res = response) => {
       });
     }
 
+    const existingCity = await City.findById(req.body.cityId);
+
+    if (!existingCity) {
+      return res.status(409).json({
+        ok: false,
+        message: responseMessages.msgCityNotFound,
+      });
+    }
+
     const busStation = new BusStation(req.body);
     const insertedBusStation = await busStation.save();
 
     return res.status(201).json({
       ok: true,
-      busStation: insertedBusStation,
+      busStation: {
+        id: insertedBusStation.id,
+        name: insertedBusStation.name,
+        cityId: existingCity._id,
+        cityName: existingCity.name,
+      },
     });
   } catch (error) {
     console.log(error);
@@ -72,6 +97,15 @@ const newBusStation = async (req, res = response) => {
 const modifyBusStation = async (req, res = response) => {
   try {
     const busStationId = req.params.id;
+    const busStation = await BusStation.findById(busStationId);
+
+    if (!busStation) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgBusStationNotFound,
+      });
+    }
+
     const existingBusStation = await BusStation.findOne({
       name: req.body.name,
       cityId: req.body.cityId,
@@ -85,17 +119,16 @@ const modifyBusStation = async (req, res = response) => {
       });
     }
 
-    const busStation = await BusStation.findById(busStationId);
+    const existingCity = await City.findById(req.body.cityId);
 
-    if (!busStation) {
+    if (!existingCity) {
       return res.status(404).json({
         ok: false,
-        message: responseMessages.msgBusStationNotFound,
+        message: responseMessages.msgCityNotFound,
       });
     }
 
     const newBusStation = { ...req.body };
-
     const updatedBusStation = await BusStation.findByIdAndUpdate(
       busStationId,
       newBusStation,
@@ -104,9 +137,21 @@ const modifyBusStation = async (req, res = response) => {
       }
     );
 
+    if (!updatedBusStation) {
+      return res.status(404).json({
+        ok: false,
+        message: responseMessages.msgBusStationNotFound,
+      });
+    }
+
     return res.json({
       ok: true,
-      busStation: updatedBusStation,
+      busStation: {
+        id: updatedBusStation.id,
+        name: updatedBusStation.name,
+        cityId: existingCity._id,
+        cityName: existingCity.name,
+      },
     });
   } catch (error) {
     console.log(error);
