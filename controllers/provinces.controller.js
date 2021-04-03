@@ -114,16 +114,14 @@ const modifyProvince = async (req, res = response) => {
 const deleteProvince = async (req, res = response) => {
   try {
     const provinceId = req.params.id;
-    const province = await Province.findById(provinceId);
+    const deletedProvince = await Province.findByIdAndDelete(provinceId);
 
-    if (!province) {
+    if (!deletedProvince) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgProvinceNotFound,
       });
     }
-
-    const deletedProvince = await Province.findByIdAndDelete(provinceId);
 
     return res.json({
       ok: true,

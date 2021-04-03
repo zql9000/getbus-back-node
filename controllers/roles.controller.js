@@ -39,7 +39,7 @@ const getRole = async (req, res = response) => {
 
 const newRole = async (req, res = response) => {
   try {
-    const existingRole = await Role.find({ name: req.body.name });
+    const existingRole = await Role.findOne({ name: req.body.name });
 
     if (existingRole) {
       return res.status(409).json({
@@ -67,7 +67,7 @@ const newRole = async (req, res = response) => {
 const modifyRole = async (req, res = response) => {
   try {
     const roleId = req.params.id;
-    const existingRole = await Role.find({
+    const existingRole = await Role.findOne({
       name: req.body.name,
       _id: { $ne: roleId },
     });
@@ -110,16 +110,14 @@ const modifyRole = async (req, res = response) => {
 const deleteRole = async (req, res = response) => {
   try {
     const roleId = req.params.id;
-    const role = await Role.findById(roleId);
+    const deletedRole = await Role.findByIdAndDelete(roleId);
 
-    if (!role) {
+    if (!deletedRole) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgRoleNotFound,
       });
     }
-
-    const deletedRole = await Role.findByIdAndDelete(roleId);
 
     return res.json({
       ok: true,

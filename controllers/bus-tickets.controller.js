@@ -39,7 +39,7 @@ const getBusTicket = async (req, res = response) => {
 
 const newBusTicket = async (req, res = response) => {
   try {
-    const existingBusTicket = await BusTicket.find({
+    const existingBusTicket = await BusTicket.findOne({
       passengerId: req.body.passengerId,
       invoiceId: req.body.invoiceId,
     });
@@ -71,7 +71,7 @@ const newBusTicket = async (req, res = response) => {
 const modifyBusTicket = async (req, res = response) => {
   try {
     const busTicketId = req.params.id;
-    const existingBusTicket = await BusTicket.find({
+    const existingBusTicket = await BusTicket.findOne({
       passengerId: req.body.passengerId,
       invoiceId: req.body.invoiceId,
       _id: { $ne: busTicketId },
@@ -119,16 +119,14 @@ const modifyBusTicket = async (req, res = response) => {
 const deleteBusTicket = async (req, res = response) => {
   try {
     const busTicketId = req.params.id;
-    const busTicket = await BusTicket.findById(busTicketId);
+    const deletedBusTicket = await BusTicket.findByIdAndDelete(busTicketId);
 
-    if (!busTicket) {
+    if (!deletedBusTicket) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgBusTicketNotFoud,
       });
     }
-
-    const deletedBusTicket = await BusTicket.findByIdAndDelete(busTicketId);
 
     return res.json({
       ok: true,

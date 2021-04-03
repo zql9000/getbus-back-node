@@ -42,7 +42,7 @@ const getPassenger = async (req, res = response) => {
 
 const newPassenger = async (req, res = response) => {
   try {
-    const existingPassenger = await Passenger.find({
+    const existingPassenger = await Passenger.findOne({
       documentTypeId: req.body.documentTypeId,
       documentNumber: req.body.documentNumber,
     });
@@ -77,7 +77,7 @@ const newPassenger = async (req, res = response) => {
 const modifyPassenger = async (req, res = response) => {
   try {
     const passengerId = req.params.id;
-    const existingPassenger = await Passenger.find({
+    const existingPassenger = await Passenger.findOne({
       documentTypeId: req.body.documentTypeId,
       documentNumber: req.body.documentNumber,
       _id: { $ne: passengerId },
@@ -126,17 +126,18 @@ const modifyPassenger = async (req, res = response) => {
 const deletePassenger = async (req, res = response) => {
   try {
     const passengerId = req.params.id;
-    const passenger = await Passenger.findById(passengerId);
+    const deletedPassenger = await Passenger.findByIdAndDelete(passengerId);
 
-    if (!passenger) {
+    if (!deletedPassenger) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgPassengerNotFoud,
       });
     }
 
-    const deletedPerson = await Person.findByIdAndDelete(passenger.personId);
-    const deletedPassenger = await Passenger.findByIdAndDelete(passengerId);
+    const deletedPerson = await Person.findByIdAndDelete(
+      deletedPassenger.personId
+    );
 
     return res.json({
       ok: true,

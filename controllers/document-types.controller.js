@@ -117,18 +117,16 @@ const modifyDocumentType = async (req, res = response) => {
 const deleteDocumentType = async (req, res = response) => {
   try {
     const documentTypeId = req.params.id;
-    const documentType = await DocumentType.findById(documentTypeId);
+    const deletedDocumentType = await DocumentType.findByIdAndDelete(
+      documentTypeId
+    );
 
-    if (!documentType) {
+    if (!deletedDocumentType) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgDocumentTypeNotFoud,
       });
     }
-
-    const deletedDocumentType = await DocumentType.findByIdAndDelete(
-      documentTypeId
-    );
 
     return res.json({
       ok: true,

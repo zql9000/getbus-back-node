@@ -39,7 +39,7 @@ const getVehicle = async (req, res = response) => {
 
 const newVehicle = async (req, res = response) => {
   try {
-    const existingVehicle = await Vehicle.find({
+    const existingVehicle = await Vehicle.findOne({
       internNumber: req.body.internNumber,
       transportCompanyId: req.body.transportCompanyId,
       vechicleTypeId: req.body.vechicleTypeId,
@@ -71,7 +71,7 @@ const newVehicle = async (req, res = response) => {
 const modifyVehicle = async (req, res = response) => {
   try {
     const vehicleId = req.params.id;
-    const existingVehicle = await Vehicle.find({
+    const existingVehicle = await Vehicle.findOne({
       internNumber: req.body.internNumber,
       transportCompanyId: req.body.transportCompanyId,
       vechicleTypeId: req.body.vechicleTypeId,
@@ -120,16 +120,14 @@ const modifyVehicle = async (req, res = response) => {
 const deleteVehicle = async (req, res = response) => {
   try {
     const vehicleId = req.params.id;
-    const vehicle = await Vehicle.findById(vehicleId);
+    const deletedVehicle = await Vehicle.findByIdAndDelete(vehicleId);
 
-    if (!vehicle) {
+    if (!deletedVehicle) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgVehicleNotFound,
       });
     }
-
-    const deletedVehicle = await Vehicle.findByIdAndDelete(vehicleId);
 
     return res.json({
       ok: true,

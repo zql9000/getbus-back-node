@@ -41,7 +41,7 @@ const getTransportCompany = async (req, res = response) => {
 
 const newTransportCompany = async (req, res = response) => {
   try {
-    const existingTransportCompany = await TransportCompany.find({
+    const existingTransportCompany = await TransportCompany.findOne({
       name: req.body.name,
     });
 
@@ -71,7 +71,7 @@ const newTransportCompany = async (req, res = response) => {
 const modifyTransportCompany = async (req, res = response) => {
   try {
     const transportCompanyId = req.params.id;
-    const existingTransportCompany = await TransportCompany.find({
+    const existingTransportCompany = await TransportCompany.findOne({
       name: req.body.name,
       _id: { $ne: transportCompanyId },
     });
@@ -120,20 +120,16 @@ const modifyTransportCompany = async (req, res = response) => {
 const deleteTransportCompany = async (req, res = response) => {
   try {
     const transportCompanyId = req.params.id;
-    const transportCompany = await TransportCompany.findById(
+    const deletedTransportCompany = await TransportCompany.findByIdAndDelete(
       transportCompanyId
     );
 
-    if (!transportCompany) {
+    if (!deletedTransportCompany) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgTransportCompanyNotFound,
       });
     }
-
-    const deletedTransportCompany = await TransportCompany.findByIdAndDelete(
-      transportCompanyId
-    );
 
     return res.json({
       ok: true,

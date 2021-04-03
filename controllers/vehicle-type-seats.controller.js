@@ -39,7 +39,7 @@ const getVehicleTypeSeat = async (req, res = response) => {
 
 const newVehicleTypeSeat = async (req, res = response) => {
   try {
-    const existingVehicleTypeSeat = await VehicleTypeSeat.find({
+    const existingVehicleTypeSeat = await VehicleTypeSeat.findOne({
       floor: req.body.floor,
       locationX: req.body.locationX,
       locationY: req.body.locationY,
@@ -71,7 +71,7 @@ const newVehicleTypeSeat = async (req, res = response) => {
 const modifyVehicleTypeSeat = async (req, res = response) => {
   try {
     const vehicleTypeSeatId = req.params.id;
-    const existingVehicleTypeSeat = await VehicleTypeSeat.find({
+    const existingVehicleTypeSeat = await VehicleTypeSeat.findOne({
       floor: req.body.floor,
       locationX: req.body.locationX,
       locationY: req.body.locationY,
@@ -120,18 +120,16 @@ const modifyVehicleTypeSeat = async (req, res = response) => {
 const deleteVehicleTypeSeat = async (req, res = response) => {
   try {
     const vehicleTypeSeatId = req.params.id;
-    const vehicleTypeSeat = await VehicleTypeSeat.findById(vehicleTypeSeatId);
+    const deletedVehicleTypeSeat = await VehicleTypeSeat.findByIdAndDelete(
+      vehicleTypeSeatId
+    );
 
-    if (!vehicleTypeSeat) {
+    if (!deletedVehicleTypeSeat) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgVehicleTypeSeatNotFound,
       });
     }
-
-    const deletedVehicleTypeSeat = await VehicleTypeSeat.findByIdAndDelete(
-      vehicleTypeSeatId
-    );
 
     return res.json({
       ok: true,

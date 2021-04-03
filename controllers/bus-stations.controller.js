@@ -41,7 +41,7 @@ const getBusStation = async (req, res = response) => {
 
 const newBusStation = async (req, res = response) => {
   try {
-    const existingBusStation = await BusStation.find({
+    const existingBusStation = await BusStation.findOne({
       name: req.body.name,
       cityId: req.body.cityId,
     });
@@ -72,7 +72,7 @@ const newBusStation = async (req, res = response) => {
 const modifyBusStation = async (req, res = response) => {
   try {
     const busStationId = req.params.id;
-    const existingBusStation = await BusStation.find({
+    const existingBusStation = await BusStation.findOne({
       name: req.body.name,
       cityId: req.body.cityId,
       _id: { $ne: busStationId },
@@ -120,16 +120,14 @@ const modifyBusStation = async (req, res = response) => {
 const deleteBusStation = async (req, res = response) => {
   try {
     const busStationId = req.params.id;
-    const busStation = await BusStation.findById(busStationId);
+    const deletedBusStation = await BusStation.findByIdAndDelete(busStationId);
 
-    if (!busStation) {
+    if (!deletedBusStation) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgBusStationNotFound,
       });
     }
-
-    const deletedBusStation = await BusStation.findByIdAndDelete(busStationId);
 
     return res.json({
       ok: true,

@@ -1,6 +1,7 @@
 const { response } = require('express');
 const { responseMessages } = require('../helpers/spanishMessages');
 const City = require('../models/City');
+const Province = require('../models/Province');
 
 const listCities = async (req, res = response) => {
   try {
@@ -8,7 +9,12 @@ const listCities = async (req, res = response) => {
 
     return res.json({
       ok: true,
-      cities,
+      cities: cities.map((city) => ({
+        id: city.id,
+        name: city.name,
+        provinceId: city.provinceId._id,
+        provinceName: city.provinceId.name,
+      })),
     });
   } catch (error) {
     console.log(error);
@@ -26,7 +32,12 @@ const getCity = async (req, res = response) => {
 
     return res.json({
       ok: true,
-      city,
+      city: {
+        id: city.id,
+        name: city.name,
+        provinceId: city.provinceId._id,
+        provinceName: city.provinceId.name,
+      },
     });
   } catch (error) {
     console.log(error);
@@ -39,7 +50,7 @@ const getCity = async (req, res = response) => {
 
 const newCity = async (req, res = response) => {
   try {
-    const existingCity = await City.find({
+    const existingCity = await City.findOne({
       name: req.body.name,
       provinceId: req.body.provinceId,
     });
@@ -51,12 +62,26 @@ const newCity = async (req, res = response) => {
       });
     }
 
+    const existingProvince = await Province.findById(req.body.provinceId);
+
+    if (!existingProvince) {
+      return res.status(409).json({
+        ok: false,
+        message: responseMessages.msgProvinceNotFound,
+      });
+    }
+
     const city = new City(req.body);
     const insertedCity = await city.save();
 
     return res.status(201).json({
       ok: true,
-      city: insertedCity,
+      city: {
+        id: insertedCity.id,
+        name: insertedCity.name,
+        provinceId: insertedCity.provinceId,
+        provinceName: existingProvince.name,
+      },
     });
   } catch (error) {
     console.log(error);
@@ -70,7 +95,7 @@ const newCity = async (req, res = response) => {
 const modifyCity = async (req, res = response) => {
   try {
     const cityId = req.params.id;
-    const existingCity = await City.find({
+    const existingCity = await City.findOne({
       name: req.body.name,
       provinceId: req.body.provinceId,
       _id: { $ne: cityId },
@@ -80,6 +105,15 @@ const modifyCity = async (req, res = response) => {
       return res.status(409).json({
         ok: false,
         message: responseMessages.msgCityExists,
+      });
+    }
+
+    const existingProvince = await Province.findById(req.body.provinceId);
+
+    if (!existingProvince) {
+      return res.status(409).json({
+        ok: false,
+        message: responseMessages.msgProvinceNotFound,
       });
     }
 
@@ -100,7 +134,12 @@ const modifyCity = async (req, res = response) => {
 
     return res.json({
       ok: true,
-      city: updatedCity,
+      city: {
+        id: updatedCity.id,
+        name: updatedCity.name,
+        provinceId: updatedCity.provinceId,
+        provinceName: existingProvince.name,
+      },
     });
   } catch (error) {
     console.log(error);
@@ -114,16 +153,14 @@ const modifyCity = async (req, res = response) => {
 const deleteCity = async (req, res = response) => {
   try {
     const cityId = req.params.id;
-    const city = await City.findById(cityId);
+    const deletedCity = await City.findByIdAndDelete(cityId);
 
-    if (!city) {
+    if (!deletedCity) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgCityNotFoud,
       });
     }
-
-    const deletedCity = await City.findByIdAndDelete(cityId);
 
     return res.json({
       ok: true,

@@ -39,7 +39,9 @@ const getPermission = async (req, res = response) => {
 
 const newPermission = async (req, res = response) => {
   try {
-    const existingPermission = await Permission.find({ name: req.body.name });
+    const existingPermission = await Permission.findOne({
+      name: req.body.name,
+    });
 
     if (existingPermission) {
       return res.status(409).json({
@@ -67,7 +69,7 @@ const newPermission = async (req, res = response) => {
 const modifyPermission = async (req, res = response) => {
   try {
     const permissionId = req.params.id;
-    const existingPermission = await Permission.find({
+    const existingPermission = await Permission.findOne({
       name: req.body.name,
       _id: { $ne: permissionId },
     });
@@ -114,16 +116,14 @@ const modifyPermission = async (req, res = response) => {
 const deletePermission = async (req, res = response) => {
   try {
     const permissionId = req.params.id;
-    const permission = await Permission.findById(permissionId);
+    const deletedPermission = await Permission.findByIdAndDelete(permissionId);
 
-    if (!permission) {
+    if (!deletedPermission) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgPermissionNotFound,
       });
     }
-
-    const deletedPermission = await Permission.findByIdAndDelete(permissionId);
 
     return res.json({
       ok: true,

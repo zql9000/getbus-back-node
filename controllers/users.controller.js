@@ -40,7 +40,7 @@ const getUser = async (req, res = response) => {
 
 const newUser = async (req, res = response) => {
   try {
-    const existingUser = await User.find({ username: req.body.username });
+    const existingUser = await User.findOne({ username: req.body.username });
 
     if (existingUser) {
       return res.status(409).json({
@@ -72,7 +72,7 @@ const newUser = async (req, res = response) => {
 const modifyUser = async (req, res = response) => {
   try {
     const userId = req.params.id;
-    const existingUser = await User.find({
+    const existingUser = await User.findOne({
       username: req.body.username,
       _id: { $ne: userId },
     });
@@ -116,17 +116,16 @@ const modifyUser = async (req, res = response) => {
 const deleteUser = async (req, res = response) => {
   try {
     const userId = req.params.id;
-    const user = await User.findById(userId);
+    const deletedUser = await User.findByIdAndDelete(userId);
 
-    if (!user) {
+    if (!deletedUser) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgUserNotFound,
       });
     }
 
-    const deletedPerson = await Person.findByIdAndDelete(user.personId);
-    const deletedUser = await User.findByIdAndDelete(userId);
+    const deletedPerson = await Person.findByIdAndDelete(deletedUser.personId);
 
     return res.json({
       ok: true,

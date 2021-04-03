@@ -43,7 +43,7 @@ const getSection = async (req, res = response) => {
 
 const newSection = async (req, res = response) => {
   try {
-    const existingSection = await Section.find({
+    const existingSection = await Section.findOne({
       busStationId: req.body.busStationId,
       busStationIdNext: req.body.busStationIdNext,
     });
@@ -74,7 +74,7 @@ const newSection = async (req, res = response) => {
 const modifySection = async (req, res = response) => {
   try {
     const sectionId = req.params.id;
-    const existingSection = await Section.find({
+    const existingSection = await Section.findOne({
       busStationId: req.body.busStationId,
       busStationIdNext: req.body.busStationIdNext,
       _id: { $ne: sectionId },
@@ -122,16 +122,14 @@ const modifySection = async (req, res = response) => {
 const deleteSection = async (req, res = response) => {
   try {
     const sectionId = req.params.id;
-    const section = await Section.findById(sectionId);
+    const deletedSection = await Section.findByIdAndDelete(sectionId);
 
-    if (!section) {
+    if (!deletedSection) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgSectionNotFound,
       });
     }
-
-    const deletedSection = await Section.findByIdAndDelete(sectionId);
 
     return res.json({
       ok: true,

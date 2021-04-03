@@ -39,7 +39,7 @@ const getInvoice = async (req, res = response) => {
 
 const newInvoice = async (req, res = response) => {
   try {
-    const existingInvoice = await Invoice.find({ number: req.body.number });
+    const existingInvoice = await Invoice.findOne({ number: req.body.number });
 
     if (existingInvoice) {
       return res.status(409).json({
@@ -69,7 +69,7 @@ const newInvoice = async (req, res = response) => {
 const modifyInvoice = async (req, res = response) => {
   try {
     const invoiceId = req.params.id;
-    const existingInvoice = await Invoice.find({
+    const existingInvoice = await Invoice.findOne({
       number: req.body.number,
       _id: { $ne: invoiceId },
     });
@@ -118,16 +118,14 @@ const modifyInvoice = async (req, res = response) => {
 const deleteInvoice = async (req, res = response) => {
   try {
     const invoiceId = req.params.id;
-    const invoice = await Invoice.findById(invoiceId);
+    const deletedInvoice = await Invoice.findByIdAndDelete(invoiceId);
 
-    if (!invoice) {
+    if (!deletedInvoice) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgInvoiceNotFoud,
       });
     }
-
-    const deletedInvoice = await Invoice.findByIdAndDelete(invoiceId);
 
     return res.json({
       ok: true,

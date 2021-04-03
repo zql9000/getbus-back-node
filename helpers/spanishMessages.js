@@ -9,15 +9,15 @@ const responseMessages = {
     'Ya existe un boleto con ese Id de pasajero y Id de factura',
   msgBusTicketNotFound: 'Boleto no encontrado',
 
-  msgCityExists: 'Ya existe una ciudad con ese nome y Id de provincia',
-  msgCityNotFound: 'Ciudad no encontrado',
+  msgCityExists: 'Ya existe una ciudad con ese nombre y Id de provincia',
+  msgCityNotFound: 'Ciudad no encontrada',
 
   msgDocumentTypeExists:
     'Ya existe un tipo de documento con ese nombre o nombre corto',
   msgDocumentTypeNotFound: 'Tipo de documento no encontrado',
 
   msgInvoiceExists: 'Ya existe una factura con ese número',
-  msgInvoiceNotFound: 'Factura no encontrado',
+  msgInvoiceNotFound: 'Factura no encontrada',
 
   msgPassengerExists:
     'Ya existe un pasajero con ese Id de tipo de documento y número de documento',
@@ -27,7 +27,7 @@ const responseMessages = {
   msgPermissionNotFound: 'Permiso no encontrado',
 
   msgProvinceExists: 'Ya existe una provincia con ese nombre',
-  msgProvinceNotFound: 'Provincia no encontrado',
+  msgProvinceNotFound: 'Provincia no encontrada',
 
   msgRolePermissionExists: 'Ya existe un rol-permiso con ese rol y permiso',
   msgRolePermissionNotFound: 'Rol-Permiso no encontrado',
@@ -43,11 +43,11 @@ const responseMessages = {
 
   msgSectionExists:
     'Ya existe una sección con ese Id de terminal y Id de terminal siguiente',
-  msgSectionNotFound: 'Sección no encontrado',
+  msgSectionNotFound: 'Sección no encontrada',
 
   msgTransportCompanyExists:
     'Ya existe una empresa de transporte con ese nombre',
-  msgTransportCompanyNotFound: 'Empresa de transporte no encontrado',
+  msgTransportCompanyNotFound: 'Empresa de transporte no encontrada',
 
   msgTravelExists: 'Ya existe un viaje con ese nombre',
   msgTravelNotFound: 'Viaje no encontrado',

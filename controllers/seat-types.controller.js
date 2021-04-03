@@ -39,7 +39,7 @@ const getSeatType = async (req, res = response) => {
 
 const newSeatType = async (req, res = response) => {
   try {
-    const existingSeatType = await SeatType.find({ name: req.body.name });
+    const existingSeatType = await SeatType.findOne({ name: req.body.name });
 
     if (existingSeatType) {
       return res.status(409).json({
@@ -67,7 +67,7 @@ const newSeatType = async (req, res = response) => {
 const modifySeatType = async (req, res = response) => {
   try {
     const seatTypeId = req.params.id;
-    const existingSeatType = await SeatType.find({
+    const existingSeatType = await SeatType.findOne({
       name: req.body.name,
       _id: { $ne: seatTypeId },
     });
@@ -114,16 +114,14 @@ const modifySeatType = async (req, res = response) => {
 const deleteSeatType = async (req, res = response) => {
   try {
     const seatTypeId = req.params.id;
-    const seatType = await SeatType.findById(seatTypeId);
+    const deletedSeatType = await SeatType.findByIdAndDelete(seatTypeId);
 
-    if (!seatType) {
+    if (!deletedSeatType) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgSeatTypeNotFound,
       });
     }
-
-    const deletedSeatType = await SeatType.findByIdAndDelete(seatTypeId);
 
     return res.json({
       ok: true,

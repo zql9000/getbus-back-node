@@ -39,7 +39,7 @@ const getRolePermission = async (req, res = response) => {
 
 const newRolePermission = async (req, res = response) => {
   try {
-    const existingRolePermission = await RolePermission.find({
+    const existingRolePermission = await RolePermission.findOne({
       role: req.body.role,
       permission: req.body.permission,
     });
@@ -70,7 +70,7 @@ const newRolePermission = async (req, res = response) => {
 const modifyRolePermission = async (req, res = response) => {
   try {
     const rolePermissionId = req.params.id;
-    const existingRolePermission = await RolePermission.find({
+    const existingRolePermission = await RolePermission.findOne({
       role: req.body.role,
       permission: req.body.permission,
       _id: { $ne: rolePermissionId },
@@ -118,18 +118,16 @@ const modifyRolePermission = async (req, res = response) => {
 const deleteRolePermission = async (req, res = response) => {
   try {
     const rolePermissionId = req.params.id;
-    const rolePermission = await RolePermission.findById(rolePermissionId);
+    const deletedRolePermission = await RolePermission.findByIdAndDelete(
+      rolePermissionId
+    );
 
-    if (!rolePermission) {
+    if (!deletedRolePermission) {
       return res.status(404).json({
         ok: false,
         message: responseMessages.msgRolePermissionNotFound,
       });
     }
-
-    const deletedRolePermission = await RolePermission.findByIdAndDelete(
-      rolePermissionId
-    );
 
     return res.json({
       ok: true,
