@@ -69,6 +69,7 @@ const modifyProvince = async (req, res = response) => {
     const provinceId = req.params.id;
     const existingProvince = await Province.findOne({
       name: req.body.name,
+      _id: { $ne: provinceId },
     });
 
     if (existingProvince) {

@@ -1,4 +1,5 @@
 const { response } = require('express');
+const mongoose = require('mongoose');
 const { responseMessages } = require('../helpers/spanishMessages');
 const DocumentType = require('../models/DocumentType');
 
@@ -39,8 +40,8 @@ const getDocumentType = async (req, res = response) => {
 
 const newDocumentType = async (req, res = response) => {
   try {
-    const existingDocumentType = await DocumentType.find({
-      $or: [{ name: req.body.name }, { shotName: req.body.shotName }],
+    const existingDocumentType = await DocumentType.findOne({
+      $or: [{ name: req.body.name }, { shortName: req.body.shortName }],
     });
 
     if (existingDocumentType) {
@@ -69,9 +70,9 @@ const newDocumentType = async (req, res = response) => {
 const modifyDocumentType = async (req, res = response) => {
   try {
     const documentTypeId = req.params.id;
-    const existingDocumentType = await DocumentType.find({
-      $or: [{ name: req.body.name }, { shotName: req.body.shotName }],
-      _id: { $ne: { documentTypeId } },
+    const existingDocumentType = await DocumentType.findOne({
+      $or: [{ name: req.body.name }, { shortName: req.body.shortName }],
+      _id: { $ne: documentTypeId },
     });
 
     if (existingDocumentType) {

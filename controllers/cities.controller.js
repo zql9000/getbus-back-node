@@ -73,7 +73,7 @@ const modifyCity = async (req, res = response) => {
     const existingCity = await City.find({
       name: req.body.name,
       provinceId: req.body.provinceId,
-      _id: { $ne: { cityId } },
+      _id: { $ne: cityId },
     });
 
     if (existingCity) {

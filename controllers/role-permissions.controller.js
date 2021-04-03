@@ -73,7 +73,7 @@ const modifyRolePermission = async (req, res = response) => {
     const existingRolePermission = await RolePermission.find({
       role: req.body.role,
       permission: req.body.permission,
-      _id: { $ne: { rolePermissionId } },
+      _id: { $ne: rolePermissionId },
     });
 
     if (existingRolePermission) {

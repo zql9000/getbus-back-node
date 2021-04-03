@@ -75,7 +75,7 @@ const modifyBusStation = async (req, res = response) => {
     const existingBusStation = await BusStation.find({
       name: req.body.name,
       cityId: req.body.cityId,
-      _id: { $ne: { busStationId } },
+      _id: { $ne: busStationId },
     });
 
     if (existingBusStation) {

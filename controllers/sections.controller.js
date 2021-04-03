@@ -77,7 +77,7 @@ const modifySection = async (req, res = response) => {
     const existingSection = await Section.find({
       busStationId: req.body.busStationId,
       busStationIdNext: req.body.busStationIdNext,
-      _id: { $ne: { sectionId } },
+      _id: { $ne: sectionId },
     });
 
     if (existingSection) {

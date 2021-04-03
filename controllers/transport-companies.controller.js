@@ -73,7 +73,7 @@ const modifyTransportCompany = async (req, res = response) => {
     const transportCompanyId = req.params.id;
     const existingTransportCompany = await TransportCompany.find({
       name: req.body.name,
-      _id: { $ne: { transportCompanyId } },
+      _id: { $ne: transportCompanyId },
     });
 
     if (existingTransportCompany) {

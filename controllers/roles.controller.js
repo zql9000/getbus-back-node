@@ -69,7 +69,7 @@ const modifyRole = async (req, res = response) => {
     const roleId = req.params.id;
     const existingRole = await Role.find({
       name: req.body.name,
-      _id: { $ne: { roleId } },
+      _id: { $ne: roleId },
     });
 
     if (existingRole) {

@@ -74,7 +74,7 @@ const modifyUser = async (req, res = response) => {
     const userId = req.params.id;
     const existingUser = await User.find({
       username: req.body.username,
-      _id: { $ne: { userId } },
+      _id: { $ne: userId },
     });
 
     if (existingUser) {

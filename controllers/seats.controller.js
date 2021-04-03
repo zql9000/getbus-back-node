@@ -69,7 +69,7 @@ const modifySeat = async (req, res = response) => {
     const seatId = req.params.id;
     const existingSeat = await Seat.find({
       number: req.body.number,
-      _id: { $ne: { seatId } },
+      _id: { $ne: seatId },
     });
 
     if (existingSeat) {

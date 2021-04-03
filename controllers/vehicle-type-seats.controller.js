@@ -75,7 +75,7 @@ const modifyVehicleTypeSeat = async (req, res = response) => {
       floor: req.body.floor,
       locationX: req.body.locationX,
       locationY: req.body.locationY,
-      _id: { $ne: { vehicleTypeSeatId } },
+      _id: { $ne: vehicleTypeSeatId },
     });
 
     if (existingVehicleTypeSeat) {

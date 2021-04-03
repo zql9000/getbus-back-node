@@ -69,7 +69,7 @@ const modifySeatType = async (req, res = response) => {
     const seatTypeId = req.params.id;
     const existingSeatType = await SeatType.find({
       name: req.body.name,
-      _id: { $ne: { seatTypeId } },
+      _id: { $ne: seatTypeId },
     });
 
     if (existingSeatType) {

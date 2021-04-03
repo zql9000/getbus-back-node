@@ -71,7 +71,7 @@ const modifyInvoice = async (req, res = response) => {
     const invoiceId = req.params.id;
     const existingInvoice = await Invoice.find({
       number: req.body.number,
-      _id: { $ne: { invoiceId } },
+      _id: { $ne: invoiceId },
     });
 
     if (existingInvoice) {

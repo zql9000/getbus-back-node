@@ -69,7 +69,7 @@ const modifyVehicleType = async (req, res = response) => {
     const vehicleTypeId = req.params.id;
     const existingVehicleType = await VehicleType.find({
       name: req.body.name,
-      _id: { $ne: { vehicleTypeId } },
+      _id: { $ne: vehicleTypeId },
     });
 
     if (existingVehicleType) {

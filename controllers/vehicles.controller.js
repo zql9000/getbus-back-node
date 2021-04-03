@@ -75,7 +75,7 @@ const modifyVehicle = async (req, res = response) => {
       internNumber: req.body.internNumber,
       transportCompanyId: req.body.transportCompanyId,
       vechicleTypeId: req.body.vechicleTypeId,
-      _id: { $ne: { vehicleId } },
+      _id: { $ne: vehicleId },
     });
 
     if (existingVehicle) {

@@ -69,7 +69,7 @@ const modifyPermission = async (req, res = response) => {
     const permissionId = req.params.id;
     const existingPermission = await Permission.find({
       name: req.body.name,
-      _id: { $ne: { permissionId } },
+      _id: { $ne: permissionId },
     });
 
     if (existingPermission) {

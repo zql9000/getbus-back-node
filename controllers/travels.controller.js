@@ -69,7 +69,7 @@ const modifyTravel = async (req, res = response) => {
     const travelId = req.params.id;
     const existingTravel = await Travel.find({
       name: req.body.name,
-      _id: { $ne: { travelId } },
+      _id: { $ne: travelId },
     });
 
     if (existingTravel) {

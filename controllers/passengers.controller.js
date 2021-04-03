@@ -80,7 +80,7 @@ const modifyPassenger = async (req, res = response) => {
     const existingPassenger = await Passenger.find({
       documentTypeId: req.body.documentTypeId,
       documentNumber: req.body.documentNumber,
-      _id: { $ne: { passengerId } },
+      _id: { $ne: passengerId },
     });
 
     if (existingPassenger) {

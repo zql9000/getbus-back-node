@@ -74,7 +74,7 @@ const modifyBusTicket = async (req, res = response) => {
     const existingBusTicket = await BusTicket.find({
       passengerId: req.body.passengerId,
       invoiceId: req.body.invoiceId,
-      _id: { $ne: { busTicketId } },
+      _id: { $ne: busTicketId },
     });
 
     if (existingBusTicket) {
