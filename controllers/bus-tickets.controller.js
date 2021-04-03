@@ -76,7 +76,7 @@ const modifyBusTicket = async (req, res = response) => {
     if (!busTicket) {
       return res.status(404).json({
         ok: false,
-        message: responseMessages.msgBusTicketNotFoud,
+        message: responseMessages.msgBusTicketNotFound,
       });
     }
 
@@ -105,7 +105,7 @@ const modifyBusTicket = async (req, res = response) => {
     if (!updatedBusTicket) {
       return res.status(404).json({
         ok: false,
-        message: responseMessages.msgBusTicketNotFoud,
+        message: responseMessages.msgBusTicketNotFound,
       });
     }
 
@@ -130,7 +130,7 @@ const deleteBusTicket = async (req, res = response) => {
     if (!deletedBusTicket) {
       return res.status(404).json({
         ok: false,
-        message: responseMessages.msgBusTicketNotFoud,
+        message: responseMessages.msgBusTicketNotFound,
       });
     }
 

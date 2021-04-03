@@ -134,7 +134,7 @@ const modifyCity = async (req, res = response) => {
     if (!updatedCity) {
       return res.status(404).json({
         ok: false,
-        message: responseMessages.msgCityNotFoud,
+        message: responseMessages.msgCityNotFound,
       });
     }
 
@@ -164,7 +164,7 @@ const deleteCity = async (req, res = response) => {
     if (!deletedCity) {
       return res.status(404).json({
         ok: false,
-        message: responseMessages.msgCityNotFoud,
+        message: responseMessages.msgCityNotFound,
       });
     }
 

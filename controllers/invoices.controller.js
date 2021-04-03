@@ -104,7 +104,7 @@ const modifyInvoice = async (req, res = response) => {
     if (!updatedInvoice) {
       return res.status(404).json({
         ok: false,
-        message: responseMessages.msgInvoiceNotFoud,
+        message: responseMessages.msgInvoiceNotFound,
       });
     }
 
@@ -129,7 +129,7 @@ const deleteInvoice = async (req, res = response) => {
     if (!deletedInvoice) {
       return res.status(404).json({
         ok: false,
-        message: responseMessages.msgInvoiceNotFoud,
+        message: responseMessages.msgInvoiceNotFound,
       });
     }
 

@@ -103,7 +103,7 @@ const modifyDocumentType = async (req, res = response) => {
     if (!updatedDocumentType) {
       return res.status(404).json({
         ok: false,
-        message: responseMessages.msgDocumentTypeNotFoud,
+        message: responseMessages.msgDocumentTypeNotFound,
       });
     }
 
@@ -130,7 +130,7 @@ const deleteDocumentType = async (req, res = response) => {
     if (!deletedDocumentType) {
       return res.status(404).json({
         ok: false,
-        message: responseMessages.msgDocumentTypeNotFoud,
+        message: responseMessages.msgDocumentTypeNotFound,
       });
     }
 
