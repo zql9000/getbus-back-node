@@ -4,6 +4,7 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { hasPermission } = require('../middlewares/hasPermission');
 const { validateJWT } = require('../middlewares/validate-jwt');
+const { optionalPassword } = require('../helpers/optionalPassword');
 const { validateParams } = require('../middlewares/validate-params');
 const {
   listUsers,
@@ -44,9 +45,9 @@ router.put(
   [
     hasPermission(`${moduleName}_Modify`),
     check('username', 'Username is required').not().isEmpty(),
-    check('password', 'Password must be at least 8 characters').isLength({
-      min: 8,
-    }),
+    check('password', 'Password must be at least 8 characters').custom(
+      optionalPassword
+    ),
     check('documentTypeId', 'DocumentTypeId is required').not().isEmpty(),
     check('documentNumber', 'DocumentNumber is required').not().isEmpty(),
     check('name', 'Name is required').not().isEmpty(),
